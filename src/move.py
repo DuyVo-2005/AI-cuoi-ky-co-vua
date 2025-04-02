@@ -11,7 +11,7 @@ class Move:
     def __eq__(self, other):
         """Truyền vào 1 Move"""
         return self.initial == other.initial and self.final == other.final    
-    def to_index(self):
+    def to_index(self)->tuple:
         # VD: ((0, 0), (0, 1))
         return (self.initial.row, self.initial.col), (self.final.row, self.final.col) 
     def to_uci(self):
