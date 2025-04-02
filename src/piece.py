@@ -21,9 +21,9 @@ class Piece:
         self.moves.append(move)
     def clear_moves(self)->None:
         self.moves = []
-    def is_black_king(self)->None:
+    def is_black_king(self)->bool:
         return self.name == "king" and self.color == "black"
-    def is_white_king(self)->None:
+    def is_white_king(self)->bool:
         return self.name == "king" and self.color == "white"
 
 class Pawn(Piece):
