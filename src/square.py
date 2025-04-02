@@ -33,7 +33,7 @@ class Square:
         return True
 
     @staticmethod
-    def get_alphacol(col)->bool:
+    def get_alphacol(col)->str:
         # Nhận 1 chỉ mục của cột và trả về chữ tương ứng
         # Ví dụ: 0 -> 'a'
         # Vì cột 0 của bàn cờ được quy ước là cột 'a'
