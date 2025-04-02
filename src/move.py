@@ -9,7 +9,7 @@ class Move:
         s += f' -> ({self.final.col}, {self.final.row})'
         return s
     def __eq__(self, other):
-        """Truyền vào 1 Piece"""
+        """Truyền vào 1 Move"""
         return self.initial == other.initial and self.final == other.final    
     def to_index(self):
         # VD: ((0, 0), (0, 1))
