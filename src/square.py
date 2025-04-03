@@ -5,7 +5,7 @@ class Square:
         self.piece = piece
         self.alphacol = Square.get_alphacol(col)
 
-    def __eq__(self, other:Square)->bool:
+    def __eq__(self, other)->bool:
         return self.row == other.row and self.col == other.col
 
     def has_piece(self)->bool:
