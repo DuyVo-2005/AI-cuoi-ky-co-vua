@@ -1,8 +1,12 @@
 import tkinter as tk
+from tkinter import ttk
 from PIL import Image, ImageTk
 import os
-from translation import translate
 from tkinter import messagebox
+
+from translation import translate
+from main_king import Main
+from algorithm import *
 
 BUTTON_WIDTH = 20
 language = "Vietnamese"
@@ -90,7 +94,52 @@ class ModeFrame(tk.Frame):
         tk.Label(self, text=translate(language, "Chọn chế độ chơi"), font=("Times New Roman", 15, "bold"), bg = "#FFCC33", fg="#008080").pack(pady=10)
         tk.Button(self, text=translate(language, "Người với người"), font=("Times New Roman", 13), width=BUTTON_WIDTH).pack(pady=5)
         tk.Button(self, text=translate(language, "Người với máy"), font=("Times New Roman", 13), width=BUTTON_WIDTH).pack(pady=5)
-        tk.Button(self, text=translate(language, "Máy với máy"), font=("Times New Roman", 13), width=BUTTON_WIDTH).pack(pady=5)
+        tk.Button(self, text=translate(language, "Máy với máy"), font=("Times New Roman", 13), width=BUTTON_WIDTH, command=lambda: parent.show_frame(BotVSBotModeFrame)).pack(pady=5)
+
+start_state_tuple = (0,0)
+
+def show_king_tour_screen(algorthm_name: str):
+    global start_state_tuple
+    root = make_node(None, None, start_state_tuple)
+    solution = None
+    if algorthm_name == "BFS" or algorthm_name == "DFS":
+        solution = uninformed_search(root, algorthm_name)
+    elif algorthm_name == "UCS":
+        solution = UCS(root)
+    if solution != None:
+    #solution = simple_hill_climbing(root)
+        print(f"Số bước di chuyển: {len(solution)}")
+        main = Main()
+        main.path = solution
+        main.mainloop()
+    else:
+        messagebox.showinfo("Thông báo", "Không tìm ra lời giải")
+   
+class BotVSBotModeFrame(tk.Frame):
+    def __init__(self, parent):
+        super().__init__(parent)
+        self["bg"] = "#FFCC33"
+        self.pack(pady=20)
+        tk.Label(self, text=translate(language, "Chọn chế độ chơi"), font=("Times New Roman", 15, "bold"), bg = "#FFCC33", fg="#008080").pack(pady=10)
+        tk.Button(self, text=translate(language, "Cuộc tẩu thoát của vua"), font=("Times New Roman", 13), width=BUTTON_WIDTH, command=lambda: parent.show_frame(BotVSBotSetupFrame)).pack(pady=5)
+        tk.Button(self, text=translate(language, "Quân tám hậu"), font=("Times New Roman", 13), width=BUTTON_WIDTH).pack(pady=5)
+        tk.Button(self, text=translate(language, "Sáng"), font=("Times New Roman", 13), width=BUTTON_WIDTH).pack(pady=5)
+
+algorthm_name = None
+
+class BotVSBotSetupFrame(tk.Frame):
+    def __init__(self, parent):
+        super().__init__(parent)
+        self["bg"] = "#FFCC33"
+        self.pack(pady=20)
+        tk.Label(self, text=translate(language, "Chọn tên thuật toán"), font=("Times New Roman", 15, "bold"), bg = "#FFCC33", fg="#008080").pack(pady=10)
+        self.algorithm_type_ccb = ttk.Combobox(self, values=["BFS", "DFS", "UCS"], width=BUTTON_WIDTH + 10)
+        self.algorithm_type_ccb.pack(pady=5)
+        self.algorithm_type_ccb.current(0)
+        tk.Button(self, text=translate(language, "Giải"), font=("Times New Roman", 13), width=BUTTON_WIDTH, command=self.load_algorithm).pack(pady=5)
+    def load_algorithm(self):
+        algorthm_name = self.algorithm_type_ccb.get()
+        show_king_tour_screen(algorthm_name)
         
 def turn_on_music():
     global play_music
