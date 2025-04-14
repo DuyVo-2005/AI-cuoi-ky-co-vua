@@ -9,29 +9,22 @@ import chess
 from bot_module.bot_logic import evaluate_board
 from board import Board
 
-def to_fen(king_pos: tuple)->str:
-    # Khởi tạo bàn cờ trống 8x8
-    board = [['1' for _ in range(8)] for _ in range(8)]
-
-    # Chuyển đổi tọa độ ví dụ: 'e4' => (hàng 4, cột 4)
-    # def to_index(pos):
-    #     col = ord(pos[0].lower()) - ord('a')
-    #     row = 8 - int(pos[1])
-    #     return row, col
-
-    # Đặt vua và hậu lên bàn cờ
-    # row_k, col_k = to_index(vua)
-    # row_q, col_q = to_index(hau)
+def to_fen(king_pos: tuple, level: int)->str:
+    board = [['1' for _ in range(8)] for _ in range(8)]#Khởi tạo bàn cờ trống 8x8
     
-    row_k, col_k = king_pos[0], king_pos[1]
-    #row_q, col_q = queen_pos[0], queen_pos[1]
+    #Vị trí quân Tốt đứng
+    if level >= 1:
+        board[4][4] = 'p'
+    if level >= 2:
+        board[1][6] = 'p'
+    if level >= 3:
+        board[6][1] = 'p'
+    if level >= 4:
+        board[1][1] = 'p'
+        
+    board[king_pos[0]][king_pos[1]] = 'K'
 
-    # if (row_k, col_k) == (row_q, col_q):
-    #     raise ValueError("Vua và hậu không thể ở cùng một vị trí.")
-
-    board[row_k][col_k] = 'K'
-
-    # Tạo FEN từ bàn cờ
+    #Tạo FEN từ bàn cờ
     fen_rows = []
     for row in board:
         fen_row = ''
@@ -48,7 +41,7 @@ def to_fen(king_pos: tuple)->str:
             fen_row += str(empty_count)
         fen_rows.append(fen_row)
 
-    # Ghép các hàng thành chuỗi FEN (chỉ phần vị trí quân)
+    #Ghép các hàng thành chuỗi FEN
     fen = '/'.join(fen_rows) + " w - - 0 1"
     return fen
 
@@ -57,12 +50,13 @@ clock = pygame.time.Clock()
 class Main:
     def __init__(self):
         pygame.init()
-        pygame.display.set_caption("King")
+        pygame.display.set_caption("King tour")
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
         self.game = Game()
         self.path = None
+        self.number_of_enermies = None
         
-        # Biến đặc biệt để vẽ không bị khựng
+        #Biến đặc biệt để vẽ không bị khựng
         self.cal_on_next_loop = False
 
     def mainloop(self):
@@ -77,8 +71,9 @@ class Main:
             clock.tick(60)
             pygame.time.delay(1000)
             
-            self.game.board = Board(self.game, fen=to_fen(self.path[i]))
+            self.game.board = Board(self.game, fen=to_fen(self.path[i], self.number_of_enermies))
             if i < len(self.path) - 1:
+                game.play_sound(captured=False)
                 i +=1
 
             # Hiển thị màn hình kết thúc nếu đã hết game

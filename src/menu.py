@@ -98,22 +98,45 @@ class ModeFrame(tk.Frame):
 
 start_state_tuple = (0,0)
 
-def show_king_tour_screen(algorthm_name: str):
+def show_king_tour_screen(algorthm_name: str, level: int):
     global start_state_tuple
     root = make_node(None, None, start_state_tuple)
     solution = None
     if algorthm_name == "BFS" or algorthm_name == "DFS":
-        solution = uninformed_search(root, algorthm_name)
+        solution = uninformed_search(root, algorthm_name, level)
     elif algorthm_name == "UCS":
-        solution = UCS(root)
+        solution = UCS(root, level)
+    elif algorthm_name == "IDS":
+        solution = IDS(root, level)
+    elif algorthm_name == "A*":
+        solution = A_start(root, level)
+    elif algorthm_name == "IDA*":
+        solution = IDA_star(root, level)
+    elif algorthm_name == "Greedy":
+        solution = Greedy(root, level)
+    elif algorthm_name == "Simple hill climbing":
+        solution = simple_hill_climbing(root, level)
+    elif algorthm_name == "Steepest ascent hill climbing":
+        solution = steepest_ascent_hill_climbing(root, level)
+    elif algorthm_name == "Stochastic hill climbing":
+        solution = stochastic_hill_climbing(root, level)
+    elif algorthm_name =="Stimulated annealing":
+        solution = stimulated_annealing(root, level)
+    elif algorthm_name == "Beam search":
+        solution = Beam_search(root, level)
+    elif algorthm_name == "Genetic algorithm":
+        solution = genetic_algorithm(root, level)
     if solution != None:
-    #solution = simple_hill_climbing(root)
-        print(f"Số bước di chuyển: {len(solution)}")
-        main = Main()
-        main.path = solution
-        main.mainloop()
+        if algorthm_name == "Genetic algorithm":
+            messagebox.showinfo(translate(language, "Thông báo"), translate(language, "Tìm ra lời giải bằng Genetic algorithm"))
+        else:
+            print(f"Số bước di chuyển: {len(solution)}")
+            main = Main()
+            main.path = solution
+            main. number_of_enermies = level
+            main.mainloop()
     else:
-        messagebox.showinfo("Thông báo", "Không tìm ra lời giải")
+        messagebox.showinfo(translate(language, "Thông báo"), translate(language, "Không tìm ra lời giải"))
    
 class BotVSBotModeFrame(tk.Frame):
     def __init__(self, parent):
@@ -133,13 +156,18 @@ class BotVSBotSetupFrame(tk.Frame):
         self["bg"] = "#FFCC33"
         self.pack(pady=20)
         tk.Label(self, text=translate(language, "Chọn tên thuật toán"), font=("Times New Roman", 15, "bold"), bg = "#FFCC33", fg="#008080").pack(pady=10)
-        self.algorithm_type_ccb = ttk.Combobox(self, values=["BFS", "DFS", "UCS"], width=BUTTON_WIDTH + 10)
+        self.algorithm_type_ccb = ttk.Combobox(self, values=["BFS", "DFS", "UCS", "IDS", "Greedy", "A*", "IDA*", "Simple hill climbing",
+                                    "Steepest ascent hill climbing", "Stochastic hill climbing", "Stimulated annealing",
+                                    "Beam search", "Genetic algorithm"], width=BUTTON_WIDTH + 10)
         self.algorithm_type_ccb.pack(pady=5)
         self.algorithm_type_ccb.current(0)
+        tk.Label(self, text=translate(language, "Chọn cấp độ"), font=("Times New Roman", 15, "bold"), bg = "#FFCC33", fg="#008080").pack(pady=10)
+        self.level_ccb = ttk.Combobox(self, values=["1", "2", "3", "4"], width=BUTTON_WIDTH + 10)
+        self.level_ccb.pack(pady=5)
+        self.level_ccb.current(0)
         tk.Button(self, text=translate(language, "Giải"), font=("Times New Roman", 13), width=BUTTON_WIDTH, command=self.load_algorithm).pack(pady=5)
     def load_algorithm(self):
-        algorthm_name = self.algorithm_type_ccb.get()
-        show_king_tour_screen(algorthm_name)
+        show_king_tour_screen(self.algorithm_type_ccb.get(), int(self.level_ccb.get()))
         
 def turn_on_music():
     global play_music

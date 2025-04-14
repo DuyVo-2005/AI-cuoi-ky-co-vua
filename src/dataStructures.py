@@ -5,9 +5,9 @@ class SearchNode:
     """
     parent: SearchNode
     """
-    def __init__(self, parent=None, action=None, state=(0,0,0,0,0,0,0,0,0)):
+    def __init__(self, parent=None, action=None, state=(0,0)):
         self.parent = parent
-        self.action = action# có thể bỏ
+        self.action = action
         self.state = state# chuỗi FEN - trạng thái bàn cờ
         if parent != None:
             self.g_cost = parent.g_cost + self.calculate_g_cost(action)
@@ -34,23 +34,48 @@ def extract_path(node: SearchNode) -> list:
     path.reverse()
     return path
 
+# class OpenList: #queue
+#     def __init__(self, type: str) -> None:
+#         self.deque = deque()
+#         self.type = type
+#         if type == "UCS":
+#             self.deque = []
+#             heapq.heapify(self.deque)# chuyển thành heap
+#     def insert(self, node:SearchNode):
+#         if self.type == "UCS":
+#             heapq.heappush(self.deque, (node.g_cost, node))
+#         else:
+#             self.deque.append(node)
+#     def pop(self):
+#         "Return SearchNode if type is BFS, DFS else tuple (cost, node)"
+#         if self.type == "BFS":
+#             return self.deque.popleft()
+#         elif self.type == "UCS":                
+#             return heapq.heappop(self.deque)    
+#         elif self.type == "DFS":
+#             return self.deque.pop()
+#     def is_empty(self):
+#         return len(self.deque) == 0
+
 class OpenList: #queue
     def __init__(self, type: str) -> None:
         self.deque = deque()
         self.type = type
-        if type == "UCS":
+        if type == "UCS" or type == "Beam search" or type == "Genetic algorithm":
             self.deque = []
             heapq.heapify(self.deque)# chuyển thành heap
     def insert(self, node:SearchNode):
         if self.type == "UCS":
             heapq.heappush(self.deque, (node.g_cost, node))
+        elif self.type == "Beam search" or self.type == "Genetic algorithm":
+            heapq.heappush(self.deque, (node.h_cost, node))
         else:
             self.deque.append(node)
     def pop(self):
         "Return SearchNode if type is BFS, DFS else tuple (cost, node)"
         if self.type == "BFS":
             return self.deque.popleft()
-        elif self.type == "UCS":                
+        elif self.type == "UCS" or self.type == "Beam search" or self.type == "Genetic algorithm":                
             return heapq.heappop(self.deque)    
         elif self.type == "DFS":
             return self.deque.pop()

@@ -15,7 +15,14 @@ translations = {
     "Chọn chế độ chơi": "Chose your play mode",
     "Người với người": "Player vs player",
     "Người với máy": "Player vs bot",
-    "Máy với máy": "Bot vs bot"
+    "Máy với máy": "Bot vs bot",
+    "Cuộc tẩu thoát của vua": "The king's Escape",
+    "Chọn tên thuật toán": "Chose algorithm name",
+    "Chọn cấp độ": "Chose level",
+    "Giải": "Solve",
+    "Thông báo": "Notification",
+    "Tìm ra lời giải bằng Genetic algorithm": "Found solution by Genetic algorithm",
+    "Không tìm ra lời giải": "No solution found"
 }
     
 def translate(language:str, text:str)->str:
