@@ -17,6 +17,7 @@ def tam_hau():
   root.title("Menu Bài Toán Tám Hậu")
   root.geometry("400x300")
   root.resizable(False, False)
+  root.configure(bg="#000fff")
 
   # Thêm Combobox để chọn
   options = ["Giải với BFS", "Giải với DFS"]
