@@ -8,6 +8,8 @@ from translation import translate
 from main_king import Main
 from algorithm import *
 
+from tam_hau.index import tam_hau
+
 BUTTON_WIDTH = 20
 language = "Vietnamese"
 play_music = False
@@ -145,7 +147,7 @@ class BotVSBotModeFrame(tk.Frame):
         self.pack(pady=20)
         tk.Label(self, text=translate(language, "Chọn chế độ chơi"), font=("Times New Roman", 15, "bold"), bg = "#FFCC33", fg="#008080").pack(pady=10)
         tk.Button(self, text=translate(language, "Cuộc tẩu thoát của vua"), font=("Times New Roman", 13), width=BUTTON_WIDTH, command=lambda: parent.show_frame(BotVSBotSetupFrame)).pack(pady=5)
-        tk.Button(self, text=translate(language, "Quân tám hậu"), font=("Times New Roman", 13), width=BUTTON_WIDTH).pack(pady=5)
+        tk.Button(self, text=translate(language, "Quân tám hậu"), font=("Times New Roman", 13), width=BUTTON_WIDTH, command=lambda: tam_hau()).pack(pady=5)
         tk.Button(self, text=translate(language, "Sáng"), font=("Times New Roman", 13), width=BUTTON_WIDTH).pack(pady=5)
 
 algorthm_name = None
