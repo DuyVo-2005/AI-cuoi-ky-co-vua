@@ -8,10 +8,13 @@ import subprocess
 from translation import translate
 from main_king import Main
 from algorithm import *
+import pygame
 
 BUTTON_WIDTH = 20
 language = "Vietnamese"
-play_music = False
+
+pygame.init()
+pygame.mixer.init()
 
 class MainApp(tk.Tk):
     def __init__(self):
@@ -82,7 +85,7 @@ class MenuFrame(tk.Frame):
         self["bg"] = "#FFCC33"
         self.pack(pady=20)
         tk.Button(self, text=translate(language, "Chơi ngay"), font=("Times New Roman", 13), width=BUTTON_WIDTH, command=lambda: parent.show_frame(ModeFrame)).pack(pady=5)
-        tk.Button(self, text=translate(language, "Thành tích"), font=("Times New Roman", 13), width=BUTTON_WIDTH).pack(pady=5)
+        #tk.Button(self, text=translate(language, "Thành tích"), font=("Times New Roman", 13), width=BUTTON_WIDTH).pack(pady=5)
         tk.Button(self, text=translate(language, "Nhạc nền"), font=("Times New Roman", 13), width=BUTTON_WIDTH, command=lambda: parent.show_frame(MusicFrame)).pack(pady=5)
         tk.Button(self, text=translate(language, "Thông tin"), font=("Times New Roman", 13), width=BUTTON_WIDTH).pack(pady=5)
         tk.Button(self, text=translate(language, "Thoát"), font=("Times New Roman", 13), width=BUTTON_WIDTH, command=close_game).pack(pady=5)
@@ -93,7 +96,7 @@ class ModeFrame(tk.Frame):
         self["bg"] = "#FFCC33"
         self.pack(pady=20)
         tk.Label(self, text=translate(language, "Chọn chế độ chơi"), font=("Times New Roman", 15, "bold"), bg = "#FFCC33", fg="#008080").pack(pady=10)
-        tk.Button(self, text=translate(language, "Người với người"), font=("Times New Roman", 13), width=BUTTON_WIDTH).pack(pady=5)
+        tk.Button(self, text=translate(language, "Người với người"), font=("Times New Roman", 13), width=BUTTON_WIDTH, command=show_player_vs_player_screen).pack(pady=5)
         tk.Button(self, text=translate(language, "Người với máy"), font=("Times New Roman", 13), width=BUTTON_WIDTH, command=show_player_vs_bot_screen).pack(pady=5)
         tk.Button(self, text=translate(language, "Máy với máy"), font=("Times New Roman", 13), width=BUTTON_WIDTH, command=lambda: parent.show_frame(BotVSBotModeFrame)).pack(pady=5)
 
@@ -141,6 +144,9 @@ def show_king_tour_screen(algorthm_name: str, level: int):
         
 def show_player_vs_bot_screen():
     subprocess.run(["python", "src/main.py"])# hoặc "python3"
+    
+def show_player_vs_player_screen():
+    subprocess.run(["python", "src/main_player_vs_player.py"])
    
 class BotVSBotModeFrame(tk.Frame):
     def __init__(self, parent):
@@ -173,13 +179,15 @@ class BotVSBotSetupFrame(tk.Frame):
     def load_algorithm(self):
         show_king_tour_screen(self.algorithm_type_ccb.get(), int(self.level_ccb.get()))
         
-def turn_on_music():
-    global play_music
-    play_music = True
+def turn_on_music():   
+    #pygame.mixer.music.load("src/background_music.wav")
+    pass
     
-def turn_off_music():
-    global play_music
-    play_music = False
+    
+def turn_off_music():  
+    #pygame.mixer.music.stop()
+    pass
+    
 def close_game():
     global app
     if messagebox.askokcancel(translate(language, "Thoát"), translate(language, "Bạn có muốn thoát?")):
