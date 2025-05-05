@@ -22,7 +22,13 @@ translations = {
     "Giải": "Solve",
     "Thông báo": "Notification",
     "Tìm ra lời giải bằng Genetic algorithm": "Found solution by Genetic algorithm",
-    "Không tìm ra lời giải": "No solution found"
+    "Không tìm ra lời giải": "No solution found",
+    "Thông tin chung": "General Information",
+    "Thành viên nhóm": "Group members",
+    "GVHD: TS. Phan Thị Huyền Trang": "Supervisor: Dr. Phan Thi Huyen Trang",
+    "Vũ Anh Quốc - Nhóm trưởng": "Vu Anh Quoc - Group leader",
+    "Võ Lê Khánh Duy": "Vo Le Khanh Duy",
+    "Phan Đình Sáng": "Phan Dinh Sang"
 }
     
 def translate(language:str, text:str)->str:

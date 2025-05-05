@@ -5,6 +5,7 @@ import os
 from tkinter import messagebox
 import subprocess
 import pygame
+import time
 
 from translation import translate
 from main_king import Main
@@ -14,6 +15,7 @@ from tam_hau.index import tam_hau
 
 BUTTON_WIDTH = 20
 language = "Vietnamese"
+DUONG_DAN_THU_MUC_HIEN_HANH = os.path.dirname(__file__)
 
 pygame.init()
 pygame.mixer.init()
@@ -64,8 +66,7 @@ class HomeFrame(tk.Frame):
         super().__init__(parent)
         self["bg"] = "#FFCC33"
         tk.Label(self, text=translate(language, "Chào mừng đến với trò chơi cờ vua AI"), font=("Times New Roman", 15, "bold"), width=30, fg="#008080", bg="#FFCC33").pack(pady=10)
-        tk.Button(self, text=translate(language, "Bắt đầu trò chơi"), font=("Times New Roman", 13), command=lambda: parent.show_frame(MenuFrame), width=BUTTON_WIDTH).pack(pady=5)
-        DUONG_DAN_THU_MUC_HIEN_HANH = os.path.dirname(__file__)
+        tk.Button(self, text=translate(language, "Bắt đầu trò chơi"), font=("Times New Roman", 13), command=lambda: parent.show_frame(MenuFrame), width=BUTTON_WIDTH).pack(pady=5)       
         duong_dan_hinh_nen_menu = DUONG_DAN_THU_MUC_HIEN_HANH + "/nen_menu.png"
         self.nen_menu = tk.PhotoImage(file=duong_dan_hinh_nen_menu) # Lưu tham chiếu nền menu của windows
         label_nen_menu = tk.Label(self, image=self.nen_menu, bg="#FFCC33")
@@ -89,9 +90,20 @@ class MenuFrame(tk.Frame):
         tk.Button(self, text=translate(language, "Chơi ngay"), font=("Times New Roman", 13), width=BUTTON_WIDTH, command=lambda: parent.show_frame(ModeFrame)).pack(pady=5)
         #tk.Button(self, text=translate(language, "Thành tích"), font=("Times New Roman", 13), width=BUTTON_WIDTH).pack(pady=5)
         tk.Button(self, text=translate(language, "Nhạc nền"), font=("Times New Roman", 13), width=BUTTON_WIDTH, command=lambda: parent.show_frame(MusicFrame)).pack(pady=5)
-        tk.Button(self, text=translate(language, "Thông tin"), font=("Times New Roman", 13), width=BUTTON_WIDTH).pack(pady=5)
+        tk.Button(self, text=translate(language, "Thông tin"), font=("Times New Roman", 13), width=BUTTON_WIDTH, command=lambda: parent.show_frame(InfoFrame)).pack(pady=5)
         tk.Button(self, text=translate(language, "Thoát"), font=("Times New Roman", 13), width=BUTTON_WIDTH, command=close_game).pack(pady=5)
 
+class InfoFrame(tk.Frame):
+    def __init__(self, parent):
+        super().__init__(parent)
+        self["bg"] = "#FFCC33"
+        self.pack(pady=20)
+        tk.Label(self, text=translate(language, "Thông tin chung"), font=("Times New Roman", 15, "bold"), bg = "#FFCC33", fg="#008080").pack(pady=10)
+        tk.Label(self, text=translate(language, "GVHD: TS. Phan Thị Huyền Trang"), font=("Times New Roman", 15, "bold"), bg = "#FFCC33", fg="#FFFFFF").pack(pady=10)
+        tk.Label(self, text=translate(language, "Thành viên nhóm"), font=("Times New Roman", 15, "bold"), bg = "#FFCC33", fg="#008080").pack(pady=10)
+        tk.Label(self, text=translate(language, "Vũ Anh Quốc - Nhóm trưởng"), font=("Times New Roman", 15, "bold"), bg = "#FFCC33", fg="#FFFFFF").pack(pady=10)
+        tk.Label(self, text=translate(language, "Võ Lê Khánh Duy"), font=("Times New Roman", 15, "bold"), bg = "#FFCC33", fg="#FFFFFF").pack(pady=10)
+        tk.Label(self, text=translate(language, "Phan Đình Sáng"), font=("Times New Roman", 15, "bold"), bg = "#FFCC33", fg="#FFFFFF").pack(pady=10)
 class ModeFrame(tk.Frame):
     def __init__(self, parent):
         super().__init__(parent)
@@ -108,6 +120,7 @@ def show_king_tour_screen(algorthm_name: str, level: int):
     global start_state_tuple
     root = make_node(None, None, start_state_tuple)
     solution = None
+    start_time = time.time()
     if algorthm_name == "BFS" or algorthm_name == "DFS":
         solution = uninformed_search(root, algorthm_name, level)
     elif algorthm_name == "UCS":
@@ -132,14 +145,17 @@ def show_king_tour_screen(algorthm_name: str, level: int):
         solution = Beam_search(root, level)
     elif algorthm_name == "Genetic algorithm":
         solution = genetic_algorithm(root, level)
+    end_time = time.time()
     if solution != None:
         if algorthm_name == "Genetic algorithm":
             messagebox.showinfo(translate(language, "Thông báo"), translate(language, "Tìm ra lời giải bằng Genetic algorithm"))
         else:
+            print(f"Tên thuật toán: {algorthm_name}")
             print(f"Số bước di chuyển: {len(solution)}")
+            print(f"Thời gian thực thi: {end_time - start_time:.9f} giây")
             main = Main()
             main.path = solution
-            main. number_of_enermies = level
+            main.number_of_enermies = level
             main.mainloop()
     else:
         messagebox.showinfo(translate(language, "Thông báo"), translate(language, "Không tìm ra lời giải"))
@@ -156,13 +172,13 @@ class BotVSBotModeFrame(tk.Frame):
         self["bg"] = "#FFCC33"
         self.pack(pady=20)
         tk.Label(self, text=translate(language, "Chọn chế độ chơi"), font=("Times New Roman", 15, "bold"), bg = "#FFCC33", fg="#008080").pack(pady=10)
-        tk.Button(self, text=translate(language, "Cuộc tẩu thoát của vua"), font=("Times New Roman", 13), width=BUTTON_WIDTH, command=lambda: parent.show_frame(BotVSBotSetupFrame)).pack(pady=5)
+        tk.Button(self, text=translate(language, "Cuộc tẩu thoát của vua"), font=("Times New Roman", 13), width=BUTTON_WIDTH, command=lambda: parent.show_frame(KingBotSetupFrame)).pack(pady=5)
         tk.Button(self, text=translate(language, "Quân tám hậu"), font=("Times New Roman", 13), width=BUTTON_WIDTH, command=lambda: tam_hau()).pack(pady=5)
         tk.Button(self, text=translate(language, "Sáng"), font=("Times New Roman", 13), width=BUTTON_WIDTH).pack(pady=5)
 
 algorthm_name = None
 
-class BotVSBotSetupFrame(tk.Frame):
+class KingBotSetupFrame(tk.Frame):
     def __init__(self, parent):
         super().__init__(parent)
         self["bg"] = "#FFCC33"
@@ -181,14 +197,14 @@ class BotVSBotSetupFrame(tk.Frame):
     def load_algorithm(self):
         show_king_tour_screen(self.algorithm_type_ccb.get(), int(self.level_ccb.get()))
         
-def turn_on_music():   
-    #pygame.mixer.music.load("src/background_music.wav")
-    pass
-    
+def turn_on_music():
+    thu_muc_cha = DUONG_DAN_THU_MUC_HIEN_HANH.replace("\\src", "")
+    duong_dan_file_nhac = thu_muc_cha + "\\assets\\sounds\\background_music.mp3"
+    pygame.mixer.music.load(duong_dan_file_nhac)
+    pygame.mixer.music.play(-1)#-1: phát lặp lại vô hạn
     
 def turn_off_music():  
-    #pygame.mixer.music.stop()
-    pass
+    pygame.mixer.music.stop()
     
 def close_game():
     global app
