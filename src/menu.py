@@ -153,6 +153,7 @@ def show_king_tour_screen(algorthm_name: str, level: int):
             print(f"Tên thuật toán: {algorthm_name}")
             print(f"Số bước di chuyển: {len(solution)}")
             print(f"Thời gian thực thi: {end_time - start_time:.9f} giây")
+            print(f"Giải pháp: {solution}")
             main = Main()
             main.path = solution
             main.number_of_enermies = level
