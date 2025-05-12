@@ -3,9 +3,9 @@ import random
 
 BOARD_SIZE = 8
 
-ACTIONS = [(-1, -1), (-1, 0), (-1, 1),
-           (0, -1),            (0, 1),
-           (1, -1),  (1, 0),   (1, 1)]
+ACTIONS = [(-1, -1), (0, -1), (1, -1),
+            (-1, 0),           (1, 0),
+            (-1, 1),  (0, 1),  (1, 1)]
 
 #B1. Khởi tạo Q-table và điền giá trị ban đầu là 0 cho các vị trí
 Q_table = np.zeros((BOARD_SIZE, BOARD_SIZE, len(ACTIONS)))
