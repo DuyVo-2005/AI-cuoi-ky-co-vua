@@ -13,6 +13,7 @@ from algorithm import *
 from tam_hau.index import tam_hau
 from ma_di_tuan import solve_knights_tour
 from king_and_pawn_move import enemy_capture_moves
+from search_with_no_observation_algoritm import search_with_no_observation_solve
 
 BUTTON_WIDTH = 20
 language = "Vietnamese"
@@ -327,7 +328,7 @@ class ModeFrame(tk.Frame):
 start_state_tuple = (0,0)
 
 def show_king_tour_screen(algorthm_name: str, level: int):
-    def play_king_animation(path: list, enemies_positions: list):
+    def play_king_animation(path: list, enemies_positions: list, is_complex_environmnet: bool = False):
         SQSIZE = 75
         COLS = 18
         ROWS = 9
@@ -357,21 +358,38 @@ def show_king_tour_screen(algorthm_name: str, level: int):
             y = pos[0] * SQSIZE
             screen.blit(image, (x, y))
 
-        for pos in path:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    exit()
-
-            screen.fill((0, 0, 0))
-            draw_board()
-            draw_image(pos, king_img)
-            for enemy_pos in enemies_positions:
-                draw_image(enemy_pos, enemies_img)
-                for attack_pos in enemy_capture_moves(enemy_pos):
-                    draw_image(attack_pos, attack_cell_img)
-            pygame.display.flip()
-            time.sleep(0.75)#Delay các bước 0.5 giây
+        if not is_complex_environmnet:
+            for pos in path:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        exit()
+                screen.fill((0, 0, 0))
+                draw_board()
+                draw_image(pos, king_img)
+                for enemy_pos in enemies_positions:
+                    draw_image(enemy_pos, enemies_img)
+                    for attack_pos in enemy_capture_moves(enemy_pos):
+                        draw_image(attack_pos, attack_cell_img)
+                pygame.display.flip()
+                time.sleep(0.75)#Delay các bước 0.75 giây
+        else:
+            display_path= path[0] + path[1]
+            for pos in range(len(path[0])):
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        exit()
+                screen.fill((0, 0, 0))
+                draw_board()
+                draw_image(display_path[pos], king_img)
+                draw_image(display_path[pos + len(path[0]) - 1], king_img)
+                for enemy_pos in enemies_positions:
+                    draw_image(enemy_pos, enemies_img)
+                    for attack_pos in enemy_capture_moves(enemy_pos):
+                        draw_image(attack_pos, attack_cell_img)
+                pygame.display.flip()
+                time.sleep(0.75)#Delay các bước 0.75 giây          
 
         running = True
         while running:
@@ -400,8 +418,16 @@ def show_king_tour_screen(algorthm_name: str, level: int):
         pos_not_move += enemy_capture_moves(pos)
     root = make_node(None, None, start_state_tuple)
     solution = None
+    solution2 = None
     start_time = time.time()
-    if algorthm_name == "BFS" or algorthm_name == "DFS":
+    if algorthm_name == "Search with no observation":
+        #Tập trạng thái khởi tạo
+        initial_belief_set = [
+            (0,0),
+            (1,1)
+        ]
+        solution, solution2 = search_with_no_observation_solve(initial_belief_set, pos_not_move)
+    elif algorthm_name == "BFS" or algorthm_name == "DFS":
         solution = uninformed_search(root, algorthm_name, pos_not_move)
     elif algorthm_name == "UCS":
         solution = UCS(root, pos_not_move)
@@ -426,15 +452,23 @@ def show_king_tour_screen(algorthm_name: str, level: int):
     elif algorthm_name == "Genetic algorithm":
         solution = genetic_algorithm(root, pos_not_move)
     end_time = time.time()
+    
+    
     if solution != None:
-        if algorthm_name == "Genetic algorithm":
-            messagebox.showinfo(translate(language, "Thông báo"), translate(language, "Tìm ra lời giải bằng Genetic algorithm"))
+        print(f"Tên thuật toán: {algorthm_name}")
+        print(f"Thời gian thực thi: {end_time - start_time:.9f} giây")
+        print(f"Số bước di chuyển: {len(solution)}")
+        if algorthm_name == "Search with no observation":
+            print("Giải pháp:")
+            print(solution)
+            print(solution2)
+            play_king_animation([solution, solution2], enimies_positions, is_complex_environmnet=True)
         else:
-            print(f"Tên thuật toán: {algorthm_name}")
-            print(f"Số bước di chuyển: {len(solution)}")
-            print(f"Thời gian thực thi: {end_time - start_time:.9f} giây")
-            print(f"Giải pháp: {solution}")
-            play_king_animation(solution, enimies_positions)
+            if algorthm_name == "Genetic algorithm":
+                messagebox.showinfo(translate(language, "Thông báo"), translate(language, "Tìm ra lời giải bằng Genetic algorithm"))
+            else:                                     
+                print(f"Giải pháp: {solution}")
+                play_king_animation(solution, enimies_positions)
     else:
         messagebox.showinfo(translate(language, "Thông báo"), translate(language, "Không tìm ra lời giải"))
         
@@ -465,7 +499,7 @@ class KingBotSetupFrame(tk.Frame):
         tk.Label(self, text=translate(language, "Chọn tên thuật toán"), font=("Times New Roman", 15, "bold"), bg = "#FFCC33", fg="#008080").pack(pady=10)
         self.algorithm_type_ccb = ttk.Combobox(self, values=["BFS", "DFS", "UCS", "IDS", "Greedy", "A*", "IDA*", "Simple hill climbing",
                                     "Steepest ascent hill climbing", "Stochastic hill climbing", "Stimulated annealing",
-                                    "Beam search", "Genetic algorithm"], width=BUTTON_WIDTH + 10)
+                                    "Beam search", "Genetic algorithm", "Search with no observation"], width=BUTTON_WIDTH + 10)
         self.algorithm_type_ccb.pack(pady=5)
         self.algorithm_type_ccb.current(0)
         tk.Label(self, text=translate(language, "Chọn cấp độ"), font=("Times New Roman", 15, "bold"), bg = "#FFCC33", fg="#008080").pack(pady=10)
