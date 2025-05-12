@@ -27,7 +27,7 @@ initial_belief_set = [
     (0,0),
     (1,1)
 ]
-max_depth = 1000
+max_depth = 10000
 danger_zones = set()
 
 def is_valid_move(x, y):
@@ -115,24 +115,27 @@ def search_in_complex_enviroment(initial_belief_set: list, is_partial_observatio
         depth += 1
     return None
 
+pawns_pos = [(6, 6), (9, 9)]
+danger_zones = get_danger_zones(pawns_pos)
 first_path = [initial_belief_set[0]]
 second_path = [initial_belief_set[1]]
 
 is_partial_observation = False
 plan = search_in_complex_enviroment(initial_belief_set, is_partial_observation)
 print("Plan to reach goal:", plan)
-order_path = 1
-for state in initial_belief_set:
-    for action in plan:
-        state = list(state)
-        state[0] += action[0]
-        state[1] += action[1]
-        state = tuple(state)
-        if order_path == 1:
-            first_path += [state]
-        else:
-            second_path += [state]
-    order_path = 2
-print(first_path)
-print(second_path)
+if plan is not None:
+    order_path = 1
+    for state in initial_belief_set:
+        for action in plan:
+            state = list(state)
+            state[0] += action[0]
+            state[1] += action[1]
+            state = tuple(state)
+            if order_path == 1:
+                first_path += [state]
+            else:
+                second_path += [state]
+        order_path = 2
+    print(first_path)
+    print(second_path)
         
