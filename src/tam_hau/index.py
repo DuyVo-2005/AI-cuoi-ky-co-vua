@@ -7,6 +7,8 @@ from .dfs import solve_dfs
 from .utils import *
 from .Q_Learning.index import solve_q_learning, q_learning
 from .Q_Learning.thong_ke import run_experiments, draw_graph
+from .nhin_thay_mot_phan import solve_8_queens_nhin_thay_1_phan
+from .ac3 import solve_8_queens_with_ac3
 
 def clear(text):
   text.delete("1.0", tk.END)
@@ -86,7 +88,8 @@ def tam_hau():
 
   # Thêm Combobox để chọn
   options = ["Giải với BFS", "Giải với DFS", "Tạo Q-Learning Model mới", "Giải với Q-Learning"
-             , "Thống kê Q-Learning với EPISODES và EPSILON"]
+             , "Thống kê Q-Learning với EPISODES và EPSILON", "Partial Observable Search",
+             "Giải với AC-3 Backtracking"]
   combobox = ttk.Combobox(root, values=options, state="readonly")
   combobox.set("Chọn một tùy chọn")  # Thiết lập giá trị mặc định
   combobox.pack(pady=5)
@@ -146,6 +149,32 @@ def tam_hau():
       insert(text_1, "Đã thống kê Q-Learning thành công!\n")
       insert(text_1, "Đang vẽ biểu đồ...\n")
       draw_graph()
+    # Partial Observable Search
+    elif selected_option == "Partial Observable Search":
+      clear(text_1)
+      insert(text_1, "Đang giải với Partial Observable Search...\n")
+      solve_8_queens_nhin_thay_1_phan()
+      data = read_lines_to_list()
+      board = queen_board(data[0])
+      insert(text_1, "Kết quả giải với Nhìn thấy 1 phần:\n")
+      insert(text_1, "\n")
+      insert(text_1, board)
+      insert(text_1, "\n\n")
+      show_pygame_board(data[0])
+    # Giải với AC-3 Backtracking
+    elif selected_option == "Giải với AC-3 Backtracking":
+      clear(text_1)
+      insert(text_1, "Đang giải với AC-3 Backtracking...\n")
+      solve_8_queens_with_ac3()
+      data = read_lines_to_list()
+      board = queen_board(data[0])
+      insert(text_1, "Kết quả giải với AC-3 Backtracking:\n")
+      insert(text_1, "\n")
+      insert(text_1, board)
+      insert(text_1, "\n\n")
+      show_pygame_board(data[0])
+
+
       
     print(f"Giải Tám Hậu với: {selected_option}")
 
