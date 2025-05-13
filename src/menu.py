@@ -19,6 +19,7 @@ from ma_di_tuan import solve_knights_tour_backtracking, solve_knights_tour_a_sta
 from king_and_pawn_move import enemy_capture_moves
 from search_with_no_observation_algoritm import search_with_no_observation_solve
 
+knights_tour_imported = True
 BUTTON_WIDTH = 20
 language = "Vietnamese"
 CURRENT_DIRECTORY_PATH = os.path.dirname(__file__)
@@ -54,7 +55,6 @@ def coords_to_algebraic(row, col, board_dim=8):
         return chr(ord('a') + col) + str(board_dim - row)
     return "??"
 
-
 class KnightsTourFrame(tk.Frame):
     def __init__(self, parent):
         super().__init__(parent)
@@ -62,38 +62,43 @@ class KnightsTourFrame(tk.Frame):
         self["bg"] = "#FFCC33"
         self.pack(fill="both", expand=True)
 
-        self.board_size_px = 480 
-        self.board_dim = 8     
+        self.board_size_px = 480
+        self.board_dim = 8
         self.cell_size = self.board_size_px // self.board_dim
         self.solution_path = None
-        self.animation_id = None 
+        self.animation_id = None
         self.current_step = 0
-        self.knight_item = None  
-        self.drawn_animation_elements = [] 
-        self.delay_ms = 250    
+        self.knight_item = None
+        self.drawn_animation_elements = []
+        self.delay_ms = 250
 
         main_paned_window = tk.PanedWindow(self, orient=tk.HORIZONTAL, sashrelief=tk.RAISED, bg="#FFCC33")
         main_paned_window.pack(fill="both", expand=True, padx=5, pady=5)
 
-        control_frame = tk.Frame(main_paned_window, bg="#FFCC33", padx=10, pady=10, width=200)
-        control_frame.pack_propagate(False) 
-        main_paned_window.add(control_frame, stretch="never") 
-
+        control_frame = tk.Frame(main_paned_window, bg="#FFCC33", padx=10, pady=10, width=250)
+        control_frame.pack_propagate(False)
+        main_paned_window.add(control_frame, stretch="never")
         tk.Label(control_frame, text=translate(language, "Mã Đi Tuần"), font=("Times New Roman", 16, "bold"), bg="#FFCC33", fg="#008080").pack(pady=(0, 10))
+        tk.Label(control_frame, text=translate(language, "Chọn thuật toán:"), font=("Times New Roman", 11), bg="#FFCC33").pack(pady=(5, 0), anchor='w')
+        algorithm_options = ["Backtracking", "A*"]
+        self.algorithm_ccb = ttk.Combobox(control_frame, values=algorithm_options, width=BUTTON_WIDTH + 5, state="readonly")
+        self.algorithm_ccb.pack(pady=5, anchor='w')
+        self.algorithm_ccb.current(0)
 
-        self.solve_button = tk.Button(control_frame, text=translate(language, "Tìm đường đi"), font=("Times New Roman", 13), width=BUTTON_WIDTH, command=self.run_solver)
-        self.solve_button.pack(pady=5)
+        solve_button_state = tk.NORMAL if knights_tour_imported else tk.DISABLED
+        self.solve_button = tk.Button(control_frame, text=translate(language, "Tìm đường đi"), font=("Times New Roman", 13), width=BUTTON_WIDTH, state=solve_button_state, command=self.run_solver)
+        self.solve_button.pack(pady=10) 
 
         self.start_stop_button = tk.Button(control_frame, text=translate(language, "Bắt đầu Hoạt ảnh"), font=("Times New Roman", 13), width=BUTTON_WIDTH, command=self.start_stop_animation, state=tk.DISABLED)
-        self.start_stop_button.pack(pady=5)
+        self.start_stop_button.pack(pady=5) 
 
-        tk.Label(control_frame, text=translate(language, "Tốc độ (ms/bước):"), font=("Times New Roman", 11), bg="#FFCC33").pack(pady=(10, 0))
-        self.speed_scale = tk.Scale(control_frame, from_=50, to=1000, resolution=50, orient=tk.HORIZONTAL, bg="#FFCC33", highlightthickness=0, length=180, command=self.update_speed)
+        tk.Label(control_frame, text=translate(language, "Tốc độ (ms/bước):"), font=("Times New Roman", 11), bg="#FFCC33").pack(pady=(10, 0), anchor='w') 
+        self.speed_scale = tk.Scale(control_frame, from_=50, to=1000, resolution=50, orient=tk.HORIZONTAL, bg="#FFCC33", highlightthickness=0, length=200, command=self.update_speed) 
         self.speed_scale.set(self.delay_ms)
-        self.speed_scale.pack(pady=0)
+        self.speed_scale.pack(pady=0, anchor='w') 
 
-        self.status_label = tk.Label(control_frame, text="", font=("Times New Roman", 12), bg="#FFCC33", fg="blue", wraplength=180)
-        self.status_label.pack(pady=10, fill=tk.X)
+        self.status_label = tk.Label(control_frame, text="", font=("Times New Roman", 12), bg="#FFCC33", fg="blue", wraplength=230, justify=tk.LEFT) 
+        self.status_label.pack(pady=10, fill=tk.X, anchor='nw')
 
         back_button = tk.Button(control_frame, text=translate(language, "Quay lại"), font=("Times New Roman", 13), width=BUTTON_WIDTH, command=lambda: parent.show_frame(BotVSBotModeFrame))
         back_button.pack(side=tk.BOTTOM, pady=20)
@@ -102,19 +107,20 @@ class KnightsTourFrame(tk.Frame):
         main_paned_window.add(right_frame, stretch="always")
 
         board_canvas_frame = tk.Frame(right_frame, bg="#AAAAAA", padx=5, pady=5)
-        board_canvas_frame.pack(pady=(5,0), fill=tk.X)
+        board_canvas_frame.pack(pady=(5,0), padx=5) 
 
         self.canvas = tk.Canvas(board_canvas_frame, width=self.board_size_px, height=self.board_size_px, bg="white", highlightthickness=0)
         self.canvas.pack()
 
         list_frame = tk.Frame(right_frame, bg="#FFCC33", padx=5, pady=5)
-        list_frame.pack(pady=5, fill="both", expand=True)
+        list_frame.pack(pady=5, padx=5, fill="both", expand=True)
 
         tk.Label(list_frame, text=translate(language, "Các nước đã đi:"), font=("Times New Roman", 12, "bold"), bg="#FFCC33").pack(anchor="w")
-        self.move_list_text = scrolledtext.ScrolledText(list_frame, height=6, width=50, state=tk.DISABLED, font=("Courier New", 10))
+        self.move_list_text = scrolledtext.ScrolledText(list_frame, height=8, width=50, state=tk.DISABLED, font=("Courier New", 10))
         self.move_list_text.pack(fill="both", expand=True)
 
         self.draw_board() 
+
 
     def draw_board(self):
         self.canvas.delete("board_elements") 
@@ -143,42 +149,295 @@ class KnightsTourFrame(tk.Frame):
         self.delay_ms = int(value)
 
     def run_solver(self):
+        if not knights_tour_imported:
+             messagebox.showerror("Lỗi.")
+             return
+
         if self.parent.solving_in_progress:
+            messagebox.showwarning(translate(language,"Cảnh báo"), translate(language,"Một thuật toán khác đang chạy, vui lòng đợi."))
             return
+
         if self.animation_id:
             self.stop_animation_if_running()
 
+        selected_algorithm = self.algorithm_ccb.get()
+        print(f"DEBUG: Selected algorithm: {selected_algorithm}")
         self.parent.solving_in_progress = True
         self.solve_button.config(state=tk.DISABLED)
         self.start_stop_button.config(state=tk.DISABLED, text=translate(language, "Bắt đầu Hoạt ảnh"))
-        self.status_label.config(text=translate(language, "Đang tìm đường đi..."))
-        self.draw_board() 
+        self.status_label.config(text=translate(language, f"Đang tìm đường đi bằng {selected_algorithm}..."))
+        self.draw_board()
         self.update_idletasks()
 
+        solution = None
+        solve_time = 0
         try:
-            print("Bắt đầu giải Mã đi tuần...")
             start_time = time.time()
+<<<<<<< HEAD
             self.solution_path = solve_knights_tour_backtracking(self.board_dim)
+=======
+            if selected_algorithm == "Backtracking":
+                solution = solve_knights_tour_backtracking(self.board_dim)
+            elif selected_algorithm == "A*":
+                solution = solve_knights_tour_a_star(self.board_dim)
+            else:
+                 messagebox.showerror("Lỗi", f"Thuật toán không hợp lệ: {selected_algorithm}")
+                 self.parent.solving_in_progress = False
+                 self.solve_button.config(state=tk.NORMAL)
+                 self.status_label.config(text=translate(language, "Chọn thuật toán và nhấn Tìm đường đi."))
+                 return 
+
+>>>>>>> 09c37b59bb0fa19d89fd5f12961fc98db8bfc515
             end_time = time.time()
             solve_time = end_time - start_time
-            print(f"Giải xong trong {solve_time:.4f} giây.")
 
-            if self.solution_path and len(self.solution_path) == self.board_dim * self.board_dim:
+            if isinstance(solution, list) and len(solution) == self.board_dim * self.board_dim:
+                self.solution_path = solution
                 self.status_label.config(text=translate(language, "Đã tìm thấy lời giải!") + f" ({solve_time:.2f}s)\n" + translate(language,"Sẵn sàng hoạt ảnh."))
-                self.start_stop_button.config(state=tk.NORMAL) 
+                self.start_stop_button.config(state=tk.NORMAL)
             else:
+                self.solution_path = None
                 self.status_label.config(text=translate(language, "Không tìm thấy lời giải.") + f" ({solve_time:.2f}s)")
-                messagebox.showinfo(translate(language,"Thông báo"), translate(language,"Không tìm thấy lời giải cho Mã đi tuần."))
-                self.solution_path = None 
+                if solution is not None:
+                     print(f"DEBUG: Solver trả về kết quả không hợp lệ: {solution}")
+                     messagebox.showwarning(translate(language,"Thông báo"), translate(language,"Thuật toán trả về kết quả không hợp lệ."))
+                else:
+                     messagebox.showinfo(translate(language,"Thông báo"), translate(language,"Không tìm thấy lời giải cho Mã đi tuần."))
 
         except Exception as e:
-            self.status_label.config(text=translate(language, "Lỗi khi giải!"))
-            messagebox.showerror(translate(language, "Lỗi Solver"), f"{translate(language, 'Có lỗi xảy ra khi chạy thuật toán Mã đi tuần')}:\n{e}")
-            print(f"Lỗi khi giải Mã đi tuần: {e}")
             self.solution_path = None
+            self.status_label.config(text=translate(language, "Lỗi khi giải!"))
+            messagebox.showerror(translate(language, "Lỗi giải thuật"), f"{translate(language, 'Có lỗi xảy ra khi chạy thuật toán Mã đi tuần')}:\n{e}")
+            print(f"Lỗi Exception khi giải Mã đi tuần: {e}")
+            import traceback
+            traceback.print_exc()
         finally:
             self.parent.solving_in_progress = False
             self.solve_button.config(state=tk.NORMAL)
+            print(f"DEBUG: Kết thúc run_solver. self.solution_path is None: {self.solution_path is None}")
+
+    def start_stop_animation(self):
+        if self.animation_id:
+            self.stop_animation_if_running()
+            self.status_label.config(text=translate(language, "Đã tạm dừng hoạt ảnh."))
+        elif self.solution_path:
+            self.clear_animation_elements() 
+            self.current_step = 0
+            self.start_stop_button.config(text=translate(language, "Dừng Hoạt ảnh"))
+            self.status_label.config(text=translate(language, "Đang chạy hoạt ảnh..."))
+            self.solve_button.config(state=tk.DISABLED)
+
+            start_row, start_col = self.solution_path[0]
+            start_x = start_col * self.cell_size + self.cell_size / 2
+            start_y = start_row * self.cell_size + self.cell_size / 2
+            self.knight_item = self.canvas.create_text(start_x, start_y, text="♞", font=("Arial", int(self.cell_size * 0.6)), fill="black")
+
+            self.update_move_list(0, start_row, start_col)
+
+            self.animation_id = self.canvas.after(self.delay_ms, self.animate_step)
+
+    def animate_step(self):
+        self.animation_id = None 
+
+        next_step = self.current_step + 1
+        if next_step < len(self.solution_path):
+            
+            prev_row, prev_col = self.solution_path[self.current_step]
+            curr_row, curr_col = self.solution_path[next_step]
+
+            prev_x_center = prev_col * self.cell_size + self.cell_size / 2
+            prev_y_center = prev_row * self.cell_size + self.cell_size / 2
+            curr_x_center = curr_col * self.cell_size + self.cell_size / 2
+            curr_y_center = curr_row * self.cell_size + self.cell_size / 2
+
+            if self.knight_item:
+                self.canvas.coords(self.knight_item, curr_x_center, curr_y_center)
+
+            num_id = self.canvas.create_text(curr_x_center, curr_y_center - self.cell_size * 0.3, 
+                                             text=str(next_step + 1),
+                                             font=("Arial", int(self.cell_size * 0.25)), fill="blue")
+            self.drawn_animation_elements.append(num_id)
+
+            line_id = self.canvas.create_line(prev_x_center, prev_y_center, curr_x_center, curr_y_center,
+                                              fill="red", width=2, arrow=tk.LAST) 
+            self.drawn_animation_elements.append(line_id)
+            self.canvas.lower(line_id, self.knight_item) 
+
+            self.update_move_list(next_step, curr_row, curr_col)
+
+
+            self.current_step = next_step
+            self.animation_id = self.canvas.after(self.delay_ms, self.animate_step)
+
+        else:
+            self.status_label.config(text=translate(language, "Hoạt ảnh hoàn thành!"))
+            self.start_stop_button.config(text=translate(language, "Chạy lại Hoạt ảnh")) 
+            self.solve_button.config(state=tk.NORMAL) 
+
+    def update_move_list(self, step_index, row, col):
+        notation = coords_to_algebraic(row, col, self.board_dim)
+        move_text = f"{step_index + 1:>3}. {notation}\n" 
+        self.move_list_text.config(state=tk.NORMAL)
+        self.move_list_text.insert(tk.END, move_text)
+        self.move_list_text.see(tk.END) 
+        self.move_list_text.config(state=tk.DISABLED)
+
+    def stop_animation_if_running(self):
+        if self.animation_id:
+            self.canvas.after_cancel(self.animation_id)
+            self.animation_id = None
+            self.start_stop_button.config(text=translate(language, "Tiếp tục Hoạt ảnh")) 
+            self.solve_button.config(state=tk.NORMAL) 
+
+
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.parent = parent
+        self["bg"] = "#FFCC33"
+        self.pack(fill="both", expand=True)
+        self.board_size_px = 480
+        self.board_dim = 8
+        self.cell_size = self.board_size_px // self.board_dim
+        self.solution_path = None
+        self.animation_id = None
+        self.current_step = 0
+        self.knight_item = None
+        self.drawn_animation_elements = []
+        self.delay_ms = 250
+        main_paned_window = tk.PanedWindow(self, orient=tk.HORIZONTAL, sashrelief=tk.RAISED, bg="#FFCC33")
+        main_paned_window.pack(fill="both", expand=True, padx=5, pady=5)
+        control_frame = tk.Frame(main_paned_window, bg="#FFCC33", padx=10, pady=10, width=250) 
+        control_frame.pack_propagate(False)
+        main_paned_window.add(control_frame, stretch="never")
+        tk.Label(control_frame, text=translate(language, "Mã Đi Tuần"), font=("Times New Roman", 16, "bold"), bg="#FFCC33", fg="#008080").pack(pady=(0, 10))
+        tk.Label(control_frame, text=translate(language, "Chọn thuật toán:"), font=("Times New Roman", 11), bg="#FFCC33").pack(pady=(5, 0), anchor='w')
+        algorithm_options = ["Backtracking", "A*"]
+        self.algorithm_ccb = ttk.Combobox(control_frame, values=algorithm_options, width=BUTTON_WIDTH + 5, state="readonly")
+        self.algorithm_ccb.pack(pady=5, anchor='w')
+        self.algorithm_ccb.current(0)
+
+        solve_button_state = tk.NORMAL if knights_tour_imported else tk.DISABLED
+        self.solve_button = tk.Button(control_frame, text=translate(language, "Tìm đường đi"), font=("Times New Roman", 13), width=BUTTON_WIDTH, state=solve_button_state, command=self.run_solver)
+        self.solve_button.pack(pady=10) 
+        self.start_stop_button = tk.Button(control_frame, text=translate(language, "Bắt đầu Hoạt ảnh"), font=("Times New Roman", 13), width=BUTTON_WIDTH, command=self.start_stop_animation, state=tk.DISABLED)
+        self.start_stop_button.pack(pady=5) 
+
+        tk.Label(control_frame, text=translate(language, "Tốc độ (ms/bước):"), font=("Times New Roman", 11), bg="#FFCC33").pack(pady=(10, 0), anchor='w') # Điều chỉnh pady, anchor nếu muốn
+        self.speed_scale = tk.Scale(control_frame, from_=50, to=1000, resolution=50, orient=tk.HORIZONTAL, bg="#FFCC33", highlightthickness=0, length=200, command=self.update_speed) # Điều chỉnh length nếu muốn
+        self.speed_scale.set(self.delay_ms)
+        self.speed_scale.pack(pady=0, anchor='w') 
+
+        self.status_label = tk.Label(control_frame, text="", font=("Times New Roman", 12), bg="#FFCC33", fg="blue", wraplength=230, justify=tk.LEFT) # Điều chỉnh wraplength, justify nếu muốn
+        self.status_label.pack(pady=10, fill=tk.X, anchor='nw') 
+
+        back_button = tk.Button(control_frame, text=translate(language, "Quay lại"), font=("Times New Roman", 13), width=BUTTON_WIDTH, command=lambda: parent.show_frame(BotVSBotModeFrame))
+        back_button.pack(side=tk.BOTTOM, pady=20)
+
+        right_frame = tk.Frame(main_paned_window, bg="#FFCC33")
+        main_paned_window.add(right_frame, stretch="always")
+        board_canvas_frame = tk.Frame(right_frame, bg="#AAAAAA", padx=5, pady=5)
+        board_canvas_frame.pack(pady=(5,0), padx=5)
+
+        self.canvas = tk.Canvas(board_canvas_frame, width=self.board_size_px, height=self.board_size_px, bg="white", highlightthickness=0)
+        self.canvas.pack()
+
+        list_frame = tk.Frame(right_frame, bg="#FFCC33", padx=5, pady=5)
+        list_frame.pack(pady=5, padx=5, fill="both", expand=True)
+
+        tk.Label(list_frame, text=translate(language, "Các nước đã đi:"), font=("Times New Roman", 12, "bold"), bg="#FFCC33").pack(anchor="w")
+        self.move_list_text = scrolledtext.ScrolledText(list_frame, height=8, width=50, state=tk.DISABLED, font=("Courier New", 10))
+        self.move_list_text.pack(fill="both", expand=True)
+
+        self.draw_board()
+
+
+    def draw_board(self):
+        self.canvas.delete("board_elements") 
+        for row in range(self.board_dim):
+            for col in range(self.board_dim):
+                x1 = col * self.cell_size
+                y1 = row * self.cell_size
+                x2 = x1 + self.cell_size
+                y2 = y1 + self.cell_size
+                color = "#FFFFFF" if (row + col) % 2 == 0 else "#D3D3D3"
+                self.canvas.create_rectangle(x1, y1, x2, y2, fill=color, outline="black", tags="board_elements")
+        self.clear_animation_elements()
+
+    def clear_animation_elements(self):
+        if self.knight_item:
+            self.canvas.delete(self.knight_item)
+            self.knight_item = None
+        for item_id in self.drawn_animation_elements:
+            self.canvas.delete(item_id)
+        self.drawn_animation_elements = []
+        self.move_list_text.config(state=tk.NORMAL)
+        self.move_list_text.delete('1.0', tk.END)
+        self.move_list_text.config(state=tk.DISABLED)
+
+    def update_speed(self, value):
+        self.delay_ms = int(value)
+
+    def run_solver(self):
+        """Lấy thuật toán đã chọn, gọi hàm giải và chuẩn bị cho animation."""
+        if not knights_tour_imported:
+             messagebox.showerror("Lỗi", "Module 'ma_di_tuan.py' chưa được tải.")
+             return
+        if self.parent.solving_in_progress:
+            messagebox.showwarning(translate(language,"Cảnh báo"), translate(language,"Một thuật toán khác đang chạy, vui lòng đợi."))
+            return
+        if self.animation_id:
+            self.stop_animation_if_running()
+        selected_algorithm = self.algorithm_ccb.get()
+        print(f"DEBUG: Selected algorithm: {selected_algorithm}")
+        self.parent.solving_in_progress = True
+        self.solve_button.config(state=tk.DISABLED)
+        self.start_stop_button.config(state=tk.DISABLED, text=translate(language, "Bắt đầu Hoạt ảnh"))
+        self.status_label.config(text=translate(language, f"Đang tìm đường đi bằng {selected_algorithm}..."))
+        self.draw_board()
+        self.update_idletasks()
+
+        solution = None
+        solve_time = 0
+        try:
+            start_time = time.time()
+            if selected_algorithm == "Backtracking":
+                solution = solve_knights_tour_backtracking(self.board_dim)
+            elif selected_algorithm == "A*":
+                solution = solve_knights_tour_a_star(self.board_dim)
+            else:
+                 messagebox.showerror("Lỗi", f"Thuật toán không hợp lệ: {selected_algorithm}")
+                 self.parent.solving_in_progress = False
+                 self.solve_button.config(state=tk.NORMAL)
+                 self.status_label.config(text=translate(language, "Chọn thuật toán và nhấn Tìm đường đi."))
+                 return 
+            end_time = time.time()
+            solve_time = end_time - start_time
+            if isinstance(solution, list) and len(solution) == self.board_dim * self.board_dim:
+                self.solution_path = solution
+                self.status_label.config(text=translate(language, "Đã tìm thấy lời giải!") + f" ({solve_time:.2f}s)\n" + translate(language,"Sẵn sàng hoạt ảnh."))
+                self.start_stop_button.config(state=tk.NORMAL)
+            else:
+                self.solution_path = None
+                self.status_label.config(text=translate(language, "Không tìm thấy lời giải.") + f" ({solve_time:.2f}s)")
+                if solution is not None:
+                     print(f"DEBUG: Solver trả về kết quả không hợp lệ: {solution}")
+                     messagebox.showwarning(translate(language,"Thông báo"), translate(language,"Thuật toán trả về kết quả không hợp lệ."))
+                else:
+                     messagebox.showinfo(translate(language,"Thông báo"), translate(language,"Không tìm thấy lời giải cho Mã đi tuần."))
+
+        except Exception as e:
+            self.solution_path = None
+            self.status_label.config(text=translate(language, "Lỗi khi giải!"))
+            messagebox.showerror(translate(language, "Lỗi Solver"), f"{translate(language, 'Có lỗi xảy ra khi chạy thuật toán Mã đi tuần')}:\n{e}")
+            print(f"Lỗi Exception khi giải Mã đi tuần: {e}")
+            import traceback
+            traceback.print_exc()
+        finally:
+            self.parent.solving_in_progress = False
+            self.solve_button.config(state=tk.NORMAL)
+            print(f"DEBUG: Kết thúc run_solver. self.solution_path is None: {self.solution_path is None}")
+
+
 
     def start_stop_animation(self):
         if self.animation_id:
