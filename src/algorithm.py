@@ -4,8 +4,29 @@ from king_and_pawn_move import generate_king_moves
 from collections import deque
 import math
 import random
+import os
 
 end_state_tuple = (8,17)
+visited_nodes = None
+
+CURRENT_DIRECTORY_PATH = os.path.dirname(__file__)
+
+def show_path_in_file(solution):
+    print(f"Số không gian trạng thái mở rộng: {len(visited_nodes.set)}")
+    with open(CURRENT_DIRECTORY_PATH + "/result.txt", "w", encoding="utf-8") as f:
+        f.write("Solution: ")
+        if solution == None:
+            f.write("\nNo solution")
+        else:
+            for state in solution:               
+                f.write(f"\n{state}")
+        f.write("\nClose list: ")
+        if visited_nodes == None:
+            f.write("\nNone")
+        else:
+            for state in visited_nodes.set:
+                f.write(f"\n{state}")
+
 
 def is_goal(state:tuple) -> bool:
     return state == end_state_tuple
@@ -27,13 +48,16 @@ def uninformed_search(root: SearchNode, type: str, pos_not_move: list):
         
         if is_goal(n.state):
             visited_nodes = close_list
-            return extract_path(n)
+            solution = extract_path(n)
+            show_path_in_file(solution)
+            return solution
         
         for action, new_state in generate_king_moves(n.state, pos_not_move):
             if not close_list.lookup(new_state):#
                 new_node = make_node(n, action, new_state)
                 open_list.insert(new_node)
     visited_nodes = close_list
+    show_path_in_file(None)
     return None
 
 def DeepLimitedSearch(node: SearchNode, depth_limit, pos_not_move: list):

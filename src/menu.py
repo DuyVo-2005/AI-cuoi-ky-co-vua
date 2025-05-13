@@ -17,7 +17,7 @@ from search_with_no_observation_algoritm import search_with_no_observation_solve
 
 BUTTON_WIDTH = 20
 language = "Vietnamese"
-DUONG_DAN_THU_MUC_HIEN_HANH = os.path.dirname(__file__)
+CURRENT_DIRECTORY_PATH = os.path.dirname(__file__)
 
 pygame.init()
 pygame.mixer.init()
@@ -275,7 +275,7 @@ class HomeFrame(tk.Frame):
         self["bg"] = "#FFCC33"
         tk.Label(self, text=translate(language, "Chào mừng đến với trò chơi cờ vua AI"), font=("Times New Roman", 15, "bold"), width=30, fg="#008080", bg="#FFCC33").pack(pady=10)
         tk.Button(self, text=translate(language, "Bắt đầu trò chơi"), font=("Times New Roman", 13), command=lambda: parent.show_frame(MenuFrame), width=BUTTON_WIDTH).pack(pady=5)       
-        duong_dan_hinh_nen_menu = DUONG_DAN_THU_MUC_HIEN_HANH + "/nen_menu.png"
+        duong_dan_hinh_nen_menu = CURRENT_DIRECTORY_PATH + "/nen_menu.png"
         self.nen_menu = tk.PhotoImage(file=duong_dan_hinh_nen_menu) 
         label_nen_menu = tk.Label(self, image=self.nen_menu, bg="#FFCC33")
         label_nen_menu.pack(pady=5)
@@ -323,7 +323,7 @@ class ModeFrame(tk.Frame):
         tk.Button(self, text=translate(language, "Người với người"), font=("Times New Roman", 13), width=BUTTON_WIDTH, command=show_player_vs_player_screen).pack(pady=5)
         tk.Button(self, text=translate(language, "Người với máy"), font=("Times New Roman", 13), width=BUTTON_WIDTH, command=show_player_vs_bot_screen).pack(pady=5)
         tk.Button(self, text=translate(language, "Máy với máy"), font=("Times New Roman", 13), width=BUTTON_WIDTH, command=lambda: parent.show_frame(BotVSBotModeFrame)).pack(pady=5)
-        tk.Button(self, text=translate(language, "Về menu"), font=("Times New Roman", 15), width=15, command = lambda: parent.show_frame(MenuFrame)).pack(pady=5)
+        tk.Button(self, text=translate(language, "Về menu"), font=("Times New Roman", 13), width=BUTTON_WIDTH, command = lambda: parent.show_frame(MenuFrame)).pack(pady=5)
 
 start_state_tuple = (0,0)
 
@@ -419,7 +419,7 @@ def show_king_tour_screen(algorthm_name: str, level: int):
     root = make_node(None, None, start_state_tuple)
     solution = None
     solution2 = None
-    start_time = time.time()
+    start_time = time.perf_counter()
     if algorthm_name == "Search with no observation":
         #Tập trạng thái khởi tạo
         initial_belief_set = [
@@ -451,8 +451,7 @@ def show_king_tour_screen(algorthm_name: str, level: int):
         solution = Beam_search(root, pos_not_move)
     elif algorthm_name == "Genetic algorithm":
         solution = genetic_algorithm(root, pos_not_move)
-    end_time = time.time()
-    
+    end_time = time.perf_counter()
     
     if solution != None:
         print(f"Tên thuật toán: {algorthm_name}")
@@ -511,7 +510,7 @@ class KingBotSetupFrame(tk.Frame):
         show_king_tour_screen(self.algorithm_type_ccb.get(), int(self.level_ccb.get()))
         
 def turn_on_music():
-    thu_muc_cha = DUONG_DAN_THU_MUC_HIEN_HANH.replace("\\src", "")
+    thu_muc_cha = CURRENT_DIRECTORY_PATH.replace("\\src", "")
     duong_dan_file_nhac = thu_muc_cha + "\\assets\\sounds\\background_music.mp3"
     pygame.mixer.music.load(duong_dan_file_nhac)
     pygame.mixer.music.play(-1)#-1: phát lặp lại vô hạn
