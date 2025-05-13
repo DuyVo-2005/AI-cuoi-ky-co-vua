@@ -173,9 +173,8 @@ class KnightsTourFrame(tk.Frame):
         solve_time = 0
         try:
             start_time = time.time()
-<<<<<<< HEAD
+
             self.solution_path = solve_knights_tour_backtracking(self.board_dim)
-=======
             if selected_algorithm == "Backtracking":
                 solution = solve_knights_tour_backtracking(self.board_dim)
             elif selected_algorithm == "A*":
@@ -187,7 +186,7 @@ class KnightsTourFrame(tk.Frame):
                  self.status_label.config(text=translate(language, "Chọn thuật toán và nhấn Tìm đường đi."))
                  return 
 
->>>>>>> 09c37b59bb0fa19d89fd5f12961fc98db8bfc515
+
             end_time = time.time()
             solve_time = end_time - start_time
 
