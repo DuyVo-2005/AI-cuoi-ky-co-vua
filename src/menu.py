@@ -826,8 +826,8 @@ def show_king_tour_screen(algorthm_name: str, level: int):
         solution = stimulated_annealing(root, pos_not_move)
     elif algorthm_name == "Beam search":
         solution = Beam_search(root, pos_not_move)
-    elif algorthm_name == "Genetic algorithm":
-        solution = genetic_algorithm(root, pos_not_move)
+    # elif algorthm_name == "Genetic algorithm":
+    #     solution = genetic_algorithm(root, pos_not_move)
     end_time = time.perf_counter()
     
     if solution != None:
@@ -840,9 +840,9 @@ def show_king_tour_screen(algorthm_name: str, level: int):
             print(solution2)
             play_king_animation([solution, solution2], enimies_positions, is_complex_environmnet=True)
         else:
-            if algorthm_name == "Genetic algorithm":
-                messagebox.showinfo(translate(language, "Thông báo"), translate(language, "Tìm ra lời giải bằng Genetic algorithm"))
-            else:                                     
+            # if algorthm_name == "Genetic algorithm":
+            #     messagebox.showinfo(translate(language, "Thông báo"), translate(language, "Tìm ra lời giải bằng Genetic algorithm"))
+            # else:                                     
                 print(f"Giải pháp: {solution}")
                 play_king_animation(solution, enimies_positions)
     else:

@@ -24,6 +24,7 @@ translations = {
     "Giải": "Solve",
     "Thông báo": "Notification",
     "Tìm ra lời giải bằng Genetic algorithm": "Found solution by Genetic algorithm",
+    "Vẽ biểu đồ": "Draw chart",
     "Không tìm ra lời giải": "No solution found",
     "Thông tin chung": "General Information",
     "Thành viên nhóm": "Group members",
