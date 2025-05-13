@@ -1,14 +1,47 @@
+#agent 2 chế độ exploit (khai thác) và khám phá (explore)
+
 import numpy as np
 import random
 
 BOARD_SIZE = 8
 
+def convert_action_to_alpha(pos: tuple):
+    if pos == (0, -1):
+        return "U"
+    if pos == (1, -1):
+        return "UR"
+    if pos == (1, 0):
+        return "R"
+    if pos == (1, 1):
+        return "DR"
+    if pos == (0, 1):
+        return "D"
+    if pos == (-1, 1):
+        return "DL"
+    if pos == (-1, 0):
+        return "L"
+    if pos == (-1, -1):
+        return "UL"
+
 ACTIONS = [(-1, -1), (0, -1), (1, -1),
             (-1, 0),           (1, 0),
             (-1, 1),  (0, 1),  (1, 1)]
 
-#B1. Khởi tạo Q-table và điền giá trị ban đầu là 0 cho các vị trí
+ACTION_NAMES = []
+for action in ACTIONS:
+    action_name = convert_action_to_alpha(action)
+    ACTION_NAMES.append(action_name)
+
+#B1. Khởi tạo Q-table và điền giá trị ban đầu là 0 cho các vị trí (chưa biết gì cả)
 Q_table = np.zeros((BOARD_SIZE, BOARD_SIZE, len(ACTIONS)))
+# ĐỊNH NGHĨA CẤU TRÚC DỮ LIỆU
+## Kích thước là (8, 8, 8):
+## Trục 1 và 2 (8x8): đại diện cho tất cả các ô vị trí trên bàn cờ.
+## Trục 3 (8): đại diện cho 8 hành động có thể thực hiện ở mỗi ô.
+# Ý NGHĨA
+## Q_table[x][y][a] lưu giá trị Q tại vị trí (x, y) khi thực hiện hành động thứ a
+## Mỗi giá trị Q đại diện cho mức độ tốt (phần thưởng kỳ vọng) của việc thực hiện 1 hành động đó tại 1 vị trí
+
 print("Q-table khởi tạo:")
 for row in range(BOARD_SIZE):
     for col in range(BOARD_SIZE):
@@ -49,8 +82,8 @@ danger_zones = get_danger_zones(enemy_pawns)
 alpha = 0.2#Tốc độ học
 gamma = 0.8#Hệ số chiết khấu: agent đến phần thưởng là bao xa.
 epsilon = 0.2#Xác suất chọn hành động ngẫu nhiên
-start_pos = (7, 4)#e1
-goal_pos = (3, 4)#e5
+start_pos = (7, 4)#e7
+goal_pos = (3, 4)#e3
 episodes = 1000#Số lượng tập huấn luyện
 
 for episode in range(episodes):
@@ -94,10 +127,18 @@ while (x, y) != goal_pos:
         break
     path.append((x, y))
 
-print("Đường đi đã học:", path)
+# print("Đường đi đã học:", path)
 
-for row in range(BOARD_SIZE):
-    for col in range(BOARD_SIZE):
-        print(Q_table[row][col])
-    print()
-    
+# for row in range(BOARD_SIZE):
+#     for col in range(BOARD_SIZE):
+#         print(Q_table[row][col])
+#     print()
+ 
+print("\n=== Q-table sau học ===")
+for i in range(BOARD_SIZE):
+    for j in range(BOARD_SIZE):
+        print(f"Vị trí ({i},{j}):")
+        for k, action in enumerate(ACTION_NAMES):
+            print(f"  Hành động {action}: {Q_table[i][j][k]:.5f}")
+        print()
+print(Q_table)   
