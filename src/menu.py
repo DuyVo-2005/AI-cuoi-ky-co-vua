@@ -7,11 +7,15 @@ from tkinter import scrolledtext
 import subprocess
 import pygame
 import time
+import pandas as pd
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
+from matplotlib.figure import Figure
 
 from translation import translate
 from algorithm import *
 from tam_hau.index import tam_hau
-from ma_di_tuan import solve_knights_tour
+from ma_di_tuan import solve_knights_tour_backtracking, solve_knights_tour_a_star
 from king_and_pawn_move import enemy_capture_moves
 from search_with_no_observation_algoritm import search_with_no_observation_solve
 
@@ -280,6 +284,120 @@ class HomeFrame(tk.Frame):
         label_nen_menu = tk.Label(self, image=self.nen_menu, bg="#FFCC33")
         label_nen_menu.pack(pady=5)
 
+class ChartFrame(tk.Frame):
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.parent = parent
+        self["bg"] = "#FFCC33"
+        self.pack(fill="both", expand=True)
+
+        self.df = None 
+        self.load_data() 
+
+        control_panel = tk.Frame(self, bg="#FFCC33", padx=10, pady=10)
+        control_panel.pack(side=tk.TOP, fill=tk.X)
+
+        tk.Label(control_panel, text=translate(language, "Chọn tiêu chí:"), font=("Times New Roman", 12), bg="#FFCC33").pack(side=tk.LEFT, padx=(0, 5))
+        self.criteria_ccb = ttk.Combobox(control_panel, values=[translate(language, "Thời gian thực thi"), translate(language, "Số bước di chuyển")], width=25, state="readonly")
+        self.criteria_ccb.pack(side=tk.LEFT, padx=(0, 15))
+        self.criteria_ccb.current(0) 
+
+        tk.Label(control_panel, text=translate(language, "Chọn Level:"), font=("Times New Roman", 12), bg="#FFCC33").pack(side=tk.LEFT, padx=(0, 5))
+        available_levels = self.df['Level'].unique().tolist() if self.df is not None and 'Level' in self.df.columns else ["LEVEL 1", "LEVEL 2", "LEVEL 3", "LEVEL 4"]
+        self.level_ccb = ttk.Combobox(control_panel, values=available_levels, width=15, state="readonly")
+        self.level_ccb.pack(side=tk.LEFT, padx=(0, 15))
+        if available_levels: self.level_ccb.current(0) 
+
+        draw_button_state = tk.NORMAL if self.df is not None else tk.DISABLED 
+        self.draw_button = tk.Button(control_panel, text=translate(language, "Vẽ biểu đồ"), font=("Times New Roman", 11), command=self.draw_chart, state=draw_button_state)
+        self.draw_button.pack(side=tk.LEFT, padx=(0, 15))
+        back_button = tk.Button(control_panel, text=translate(language, "Quay lại Menu"), font=("Times New Roman", 11), command=lambda: parent.show_frame(MenuFrame))
+        back_button.pack(side=tk.LEFT)
+
+        self.chart_container_frame = tk.Frame(self, bg="white")
+        self.chart_container_frame.pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True, padx=10, pady=10)
+
+        self.canvas = None 
+        self.toolbar = None 
+
+    def load_data(self):
+        try:
+            data_path = os.path.join(DUONG_DAN_THU_MUC_HIEN_HANH, 'data.csv')
+            self.df = pd.read_csv(data_path)
+            print(f"DEBUG: Đã tải dữ liệu từ {data_path}. Số dòng: {len(self.df)}")
+            if not all(col in self.df.columns for col in ['Level', 'Tên thuật toán', 'Thời gian thực thi', 'Số bước di chuyển']):
+                 print("Cảnh báo: File data.csv thiếu các cột cần thiết ('Level', 'Tên thuật toán', 'Thời gian thực thi', 'Số bước di chuyển').")
+                 self.df = None
+        except FileNotFoundError:
+            messagebox.showerror(translate(language, "Lỗi File"), translate(language, "Không tìm thấy file 'data.csv'. Hãy đảm bảo file này nằm cùng thư mục với menu.py"))
+            print("ERROR: File data.csv not found.")
+            self.df = None
+        except Exception as e:
+            messagebox.showerror(translate(language, "Lỗi Đọc File"), f"{translate(language, 'Lỗi khi đọc file data.csv')}: {e}")
+            print(f"ERROR: Error reading data.csv: {e}")
+            self.df = None
+
+    def clear_chart(self):
+        if self.toolbar:
+            self.toolbar.destroy()
+            self.toolbar = None
+        if self.canvas:
+            self.canvas.get_tk_widget().destroy()
+            self.canvas = None
+    def draw_chart(self):
+        if self.df is None:
+            messagebox.showwarning(translate(language, "Thiếu dữ liệu"), translate(language, "Không có dữ liệu để vẽ biểu đồ. Vui lòng kiểm tra file data.csv."))
+            return
+        selected_criteria_text = self.criteria_ccb.get()
+        selected_level = self.level_ccb.get()
+        criteria_map = {
+            translate(language, "Thời gian thực thi"): 'Thời gian thực thi',
+            translate(language, "Số bước di chuyển"): 'Số bước di chuyển'
+        }
+        selected_column = criteria_map.get(selected_criteria_text)
+
+        if selected_column is None:
+             messagebox.showerror(translate(language, "Lỗi Lựa chọn"), translate(language, "Tiêu chí lựa chọn không hợp lệ."))
+             print(f"ERROR: Invalid criteria selected: {selected_criteria_text}")
+             return 
+
+        df_level = self.df[self.df['Level'] == selected_level].copy()
+
+        if df_level.empty:
+            messagebox.showinfo(translate(language, "Không có dữ liệu"), f"{translate(language, 'Không tìm thấy dữ liệu cho')}: {selected_level}")
+            print(f"DEBUG: No data found for level: {selected_level}")
+            self.clear_chart() 
+            return
+
+        algorithm_names = df_level['Tên thuật toán']
+        metric_values = df_level[selected_column]
+
+        self.clear_chart()
+        self.fig = Figure(figsize=(7, 5), dpi=100)
+        self.ax = self.fig.add_subplot(111)
+        bars = self.ax.bar(algorithm_names, metric_values, color='skyblue') 
+        for bar in bars:
+            yval = bar.get_height()
+            format_string = "%.4f" if selected_column == 'Thời gian thực thi' else "%d"
+            self.ax.text(bar.get_x() + bar.get_width()/2.0, yval, format_string % yval, va='bottom', ha='center', fontsize=8) 
+
+        self.ax.set_xlabel(translate(language, "Tên thuật toán"))
+        self.ax.set_ylabel(selected_criteria_text) 
+        self.ax.set_title(f"{translate(language, 'So sánh')} {selected_criteria_text} - {selected_level}")
+
+        plt.setp(self.ax.get_xticklabels(), rotation=45, ha="right")
+
+        self.fig.tight_layout()
+        self.canvas = FigureCanvasTkAgg(self.fig, master=self.chart_container_frame)
+        self.canvas_widget = self.canvas.get_tk_widget()
+        self.canvas_widget.pack(side=tk.TOP, fill=tk.BOTH, expand=1)
+        self.toolbar = NavigationToolbar2Tk(self.canvas, self.chart_container_frame)
+        self.toolbar.update()
+        self.canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
+        self.canvas.draw()
+     
+
+
 class MusicFrame(tk.Frame):
     def __init__(self, parent):
         super().__init__(parent)
@@ -299,6 +417,7 @@ class MenuFrame(tk.Frame):
         #tk.Button(self, text=translate(language, "Thành tích"), font=("Times New Roman", 13), width=BUTTON_WIDTH).pack(pady=5)
         tk.Button(self, text=translate(language, "Nhạc nền"), font=("Times New Roman", 13), width=BUTTON_WIDTH, command=lambda: parent.show_frame(MusicFrame)).pack(pady=5)
         tk.Button(self, text=translate(language, "Thông tin"), font=("Times New Roman", 13), width=BUTTON_WIDTH, command=lambda: parent.show_frame(InfoFrame)).pack(pady=5)
+        tk.Button(self, text=translate(language, "Vẽ biểu đồ"), font=("Times New Roman", 13), width=BUTTON_WIDTH, command=lambda: parent.show_frame(ChartFrame)).pack(pady=5)
         tk.Button(self, text=translate(language, "Thoát"), font=("Times New Roman", 13), width=BUTTON_WIDTH, command=close_game).pack(pady=5)
 
 class InfoFrame(tk.Frame):

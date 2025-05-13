@@ -1,88 +1,130 @@
-import time 
+import time
+import heapq 
+
 BOARD_SIZE = 8
 
-def is_safe(x, y, board):
+x_move = [2, 1, -1, -2, -2, -1, 1, 2]
+y_move = [1, 2, 2, 1, -1, -2, -2, -1]
 
-    return 0 <= x < BOARD_SIZE and 0 <= y < BOARD_SIZE and board[x][y] == -1
+def is_safe(x, y, board_size):
+    return 0 <= x < board_size and 0 <= y < board_size
 
-def print_solution(board):
-
-    for i in range(BOARD_SIZE):
-        for j in range(BOARD_SIZE):
-            print(f"{board[i][j]:2d}", end=" ")
-        print()
-
-def solve_kt_util(x, y, move_i, board, x_move, y_move):
-    """
-    Hàm đệ quy quay lui để giải bài toán Mã đi tuần.
-    Args:
-        x (int): Tọa độ hàng hiện tại.
-        y (int): Tọa độ cột hiện tại.
-        move_i (int): Số thứ tự bước đi hiện tại (từ 1 đến BOARD_SIZE*BOARD_SIZE).
-        board (list[list[int]]): Bàn cờ lưu trữ các bước đi.
-        x_move (list[int]): Các thay đổi tọa độ x cho 8 nước đi của quân Mã.
-        y_move (list[int]): Các thay đổi tọa độ y cho 8 nước đi của quân Mã.
-    Returns:
-        bool: True nếu tìm thấy lời giải từ vị trí này, False nếu không.
-    """
-    # Nếu đã đi hết tất cả các ô
-    if move_i == BOARD_SIZE * BOARD_SIZE:
+def solve_kt_util(x, y, move_i, board, x_move, y_move, board_size):
+    if move_i == board_size * board_size:
         return True
 
-    # Thử tất cả các nước đi tiếp theo từ vị trí (x, y) hiện tại
     for k in range(8):
         next_x = x + x_move[k]
         next_y = y + y_move[k]
-        if is_safe(next_x, next_y, board):
-            board[next_x][next_y] = move_i # Đánh dấu bước đi
-            # Gọi đệ quy cho nước đi tiếp theo
-            if solve_kt_util(next_x, next_y, move_i + 1, board, x_move, y_move):
+        if 0 <= next_x < board_size and 0 <= next_y < board_size and board[next_x][next_y] == -1:
+            board[next_x][next_y] = move_i
+            if solve_kt_util(next_x, next_y, move_i + 1, board, x_move, y_move, board_size):
                 return True
-            else:
-                # Nếu đi tiếp không thành công, quay lui (backtrack)
-                board[next_x][next_y] = -1 # Bỏ đánh dấu
+            board[next_x][next_y] = -1
     return False
 
-def solve_knights_tour(board_size=8):
-   
-    global BOARD_SIZE
-    BOARD_SIZE = board_size 
 
-    board = [[-1 for _ in range(BOARD_SIZE)] for _ in range(BOARD_SIZE)]
-
-    x_move = [2, 1, -1, -2, -2, -1, 1, 2]
-    y_move = [1, 2, 2, 1, -1, -2, -2, -1]
-
-
+def solve_knights_tour_backtracking(board_size=8):
+    board = [[-1 for _ in range(board_size)] for _ in range(board_size)]
     start_x, start_y = 0, 0
-    board[start_x][start_y] = 0 
+    board[start_x][start_y] = 0
 
-    if not solve_kt_util(start_x, start_y, 1, board, x_move, y_move):
-        print("Không tìm thấy lời giải")
+    if not solve_kt_util(start_x, start_y, 1, board, x_move, y_move, board_size):
         return None
     else:
-        print("Tìm thấy lời giải!")
+        path = [None] * (board_size * board_size)
+        for r in range(board_size):
+            for c in range(board_size):
+                if board[r][c] != -1:
+                    path[board[r][c]] = (r, c)
+        return path
+def heuristic(visited_count, board_size):
+    return (board_size * board_size) - visited_count
+def coords_to_index(r, c, board_size):
+    return r * board_size + c
 
-        path = [None] * (BOARD_SIZE * BOARD_SIZE)
-        for r in range(BOARD_SIZE):
-            for c in range(BOARD_SIZE):
-                if board[r][c] != -1: 
-                    path[board[r][c]] = (r, c) 
+def index_to_coords(index, board_size):
+    return (index // board_size, index % board_size)
 
-        if None in path:
-             print("Lỗi: Đường đi trích xuất không đầy đủ.")
-             return None 
+def count_set_bits(mask):
+    count = 0
+    while mask > 0:
+        mask &= (mask - 1)
+        count += 1
+    return count
 
-        return path 
+def solve_knights_tour_a_star(board_size=8):
+    total_cells = board_size * board_size
+    open_set = []
+    g_score = {}
+    came_from = {}
+    start_row, start_col = 0, 0
+    start_mask = 1 << coords_to_index(start_row, start_col, board_size)
+    start_g = 0
+    start_h = heuristic(1, board_size)
+    start_f = start_g + start_h
+
+    start_state = (start_row, start_col, start_mask)
+
+    heapq.heappush(open_set, (start_f, start_g, start_row, start_col, start_mask))
+    g_score[start_state] = start_g
+
+    print(f"DEBUG (A*): Bắt đầu giải cho bàn cờ {board_size}x{board_size}...")
+
+    while open_set:
+        current_f, current_g, current_row, current_col, current_mask = heapq.heappop(open_set)
+        current_state = (current_row, current_col, current_mask)
+        if count_set_bits(current_mask) == total_cells:
+            print("DEBUG (A*): Tìm thấy lời giải!")
+            path = []
+            u = current_state
+            while u in came_from:
+                parent_state = came_from[u]
+                path.append((u[0], u[1]))
+                u = parent_state 
+
+            path.append((start_row, start_col))
+            path.reverse() 
+            if len(path) == total_cells:
+                 return path
+            else:
+                 print(f"WARN (A*): Đường đi tái tạo có độ dài không khớp: {len(path)} vs {total_cells}")
+                 return None
+        for k in range(8):
+            neighbor_row = current_row + x_move[k]
+            neighbor_col = current_col + y_move[k]
+
+            if is_safe(neighbor_row, neighbor_col, board_size):
+                neighbor_index = coords_to_index(neighbor_row, neighbor_col, board_size)
+                if (current_mask >> neighbor_index) & 1 == 0:
+                    new_mask = current_mask | (1 << neighbor_index) 
+                    new_g = current_g + 1
+
+                    neighbor_state = (neighbor_row, neighbor_col, new_mask)
+                    if neighbor_state not in g_score or new_g < g_score[neighbor_state]:
+                        g_score[neighbor_state] = new_g
+                        new_h = heuristic(count_set_bits(new_mask), board_size)
+                        new_f = new_g + new_h
+                        heapq.heappush(open_set, (new_f, new_g, neighbor_row, neighbor_col, new_mask))
+                        came_from[neighbor_state] = current_state 
+    print("DEBUG (A*): Open set rỗng, không tìm thấy lời giải.")
+    return None
 
 if __name__ == '__main__':
-    print(f"Bắt đầu giải Mã đi tuần cho bàn cờ {BOARD_SIZE}x{BOARD_SIZE}...")
+    print(f"Bắt đầu giải Mã đi tuần cho bàn cờ {BOARD_SIZE}x{BOARD_SIZE} bằng Backtracking...")
     start_time = time.time()
-    solution_path = solve_knights_tour(BOARD_SIZE)
+    solution_path_bt = solve_knights_tour_backtracking(BOARD_SIZE)
     end_time = time.time()
+    if solution_path_bt:
+        print(f"Backtracking tìm thấy lời giải trong {end_time - start_time:.4f} giây. Số bước: {len(solution_path_bt)}")
+    else:
+         print(f"Backtracking không tìm thấy lời giải trong {end_time - start_time:.4f} giây.")
 
-    if solution_path:
-        print(f"\nĐường đi tìm được (danh sách tọa độ (hàng, cột)):")
-        print(solution_path[:10], "...")
-        print(f"\nTổng số bước: {len(solution_path)}")
-    print(f"Thời gian giải: {end_time - start_time:.4f} giây")
+    print(f"\nBắt đầu giải Mã đi tuần cho bàn cờ {BOARD_SIZE}x{BOARD_SIZE} bằng A*...")
+    start_time = time.time()
+    solution_path_a_star = solve_knights_tour_a_star(BOARD_SIZE)
+    end_time = time.time()
+    if solution_path_a_star:
+        print(f"A* tìm thấy lời giải trong {end_time - start_time:.4f} giây. Số bước: {len(solution_path_a_star)}")
+    else:
+         print(f"A* không tìm thấy lời giải trong {end_time - start_time:.4f} giây.")
