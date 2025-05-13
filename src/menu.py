@@ -740,7 +740,7 @@ def show_king_tour_screen(algorthm_name: str, level: int):
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         pygame.quit()
-                        exit()
+                        # exit()
                 screen.fill((0, 0, 0))
                 draw_board()
                 draw_image(pos, king_img)
@@ -756,7 +756,7 @@ def show_king_tour_screen(algorthm_name: str, level: int):
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         pygame.quit()
-                        exit()
+                        # exit()
                 screen.fill((0, 0, 0))
                 draw_board()
                 draw_image(display_path[pos], king_img)
@@ -826,8 +826,8 @@ def show_king_tour_screen(algorthm_name: str, level: int):
         solution = stimulated_annealing(root, pos_not_move)
     elif algorthm_name == "Beam search":
         solution = Beam_search(root, pos_not_move)
-    # elif algorthm_name == "Genetic algorithm":
-    #     solution = genetic_algorithm(root, pos_not_move)
+    elif algorthm_name == "Genetic algorithm":
+        solution = genetic_algorithm(root, pos_not_move)
     end_time = time.perf_counter()
     
     if solution != None:
@@ -840,9 +840,9 @@ def show_king_tour_screen(algorthm_name: str, level: int):
             print(solution2)
             play_king_animation([solution, solution2], enimies_positions, is_complex_environmnet=True)
         else:
-            # if algorthm_name == "Genetic algorithm":
-            #     messagebox.showinfo(translate(language, "Thông báo"), translate(language, "Tìm ra lời giải bằng Genetic algorithm"))
-            # else:                                     
+            if algorthm_name == "Genetic algorithm":
+                messagebox.showinfo(translate(language, "Thông báo"), translate(language, "Tìm ra lời giải bằng Genetic algorithm"))
+            else:                                     
                 print(f"Giải pháp: {solution}")
                 play_king_animation(solution, enimies_positions)
     else:
@@ -864,6 +864,8 @@ class BotVSBotModeFrame(tk.Frame):
         tk.Button(self, text=translate(language, "Quân tám hậu"), font=("Times New Roman", 13), width=BUTTON_WIDTH, command=lambda: tam_hau()).pack(pady=5)
         tk.Button(self, text=translate(language, "Mã đi tuần"), font=("Times New Roman", 13), width=BUTTON_WIDTH, 
                   command=lambda: parent.show_frame(KnightsTourFrame)).pack(pady=5)
+        tk.Button(self, text=translate(language, "Quay lại"), font=("Times New Roman", 13), width=BUTTON_WIDTH, 
+                  command=lambda: parent.show_frame(ModeFrame)).pack(pady=5)
 
 algorthm_name = None
 
@@ -883,6 +885,8 @@ class KingBotSetupFrame(tk.Frame):
         self.level_ccb.pack(pady=5)
         self.level_ccb.current(0)
         tk.Button(self, text=translate(language, "Giải"), font=("Times New Roman", 13), width=BUTTON_WIDTH, command=self.load_algorithm).pack(pady=5)
+        tk.Button(self, text=translate(language, "Quay lại"), font=("Times New Roman", 13), width=BUTTON_WIDTH, 
+                  command=lambda: parent.show_frame(BotVSBotModeFrame)).pack(pady=5)
     def load_algorithm(self):
         show_king_tour_screen(self.algorithm_type_ccb.get(), int(self.level_ccb.get()))
         

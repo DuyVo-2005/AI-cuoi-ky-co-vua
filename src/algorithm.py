@@ -369,40 +369,40 @@ def mutate(individual:tuple)->tuple:
     individual[i], individual[j] = individual[j], individual[i]
     return tuple(individual)
 
-# def genetic_algorithm(root: SearchNode, pos_not_move: list):
-#     """không cần truy xuất đường đi"""
-#     if is_goal(root.state):
-#         return "Found goal state"
+def genetic_algorithm(root: SearchNode, pos_not_move: list):
+    """không cần truy xuất đường đi"""
+    if is_goal(root.state):
+        return "Found goal state"
     
-#     open_list = OpenList("Genetic algorithm")
-#     close_list = CloseList()
-#     close_list.insert(root.state)
-#     populations_state = generate_king_moves(root.state, pos_not_move)
-#     for action, state in populations_state:
-#         if not close_list.lookup(state):
-#             new_node = make_node(root, action, state)
-#             new_node.h_cost = heuristic(new_node.state)
-#             if is_goal(new_node.state):
-#                 return "Found goal state"
-#             open_list.insert(new_node)
+    open_list = OpenList("Genetic algorithm")
+    close_list = CloseList()
+    close_list.insert(root.state)
+    populations_state = generate_king_moves(root.state, pos_not_move)
+    for action, state in populations_state:
+        if not close_list.lookup(state):
+            new_node = make_node(root, action, state)
+            new_node.h_cost = heuristic(new_node.state)
+            if is_goal(new_node.state):
+                return "Found goal state"
+            open_list.insert(new_node)
         
-#     while len(open_list.deque) >= 2:#phải có ít nhất 2 node lai ghép
-#         father_node, mother_node = open_list.pop()[1], open_list.pop()[1]
-#         child_state_1, child_state_2 = mutate(order_crossover(father_node.state, mother_node.state))
-#         close_list.insert(child_state_1)
-#         child_node1 = make_node(father_node, None, child_state_1)
-#         if is_goal(child_node1.state):
-#             return "Found goal state"
+    while len(open_list.deque) >= 2:#phải có ít nhất 2 node lai ghép
+        father_node, mother_node = open_list.pop()[1], open_list.pop()[1]
+        child_state_1, child_state_2 = mutate(order_crossover(father_node.state, mother_node.state))
+        close_list.insert(child_state_1)
+        child_node1 = make_node(father_node, None, child_state_1)
+        if is_goal(child_node1.state):
+            return "Found goal state"
         
-#         close_list.insert(child_state_2)
-#         child_node2 = make_node(mother_node, None, child_state_2)
-#         if is_goal(child_node2.state):
-#             return "Found goal state"
+        close_list.insert(child_state_2)
+        child_node2 = make_node(mother_node, None, child_state_2)
+        if is_goal(child_node2.state):
+            return "Found goal state"
         
-#         child_node1.h_cost = heuristic(child_node1.state)
-#         child_node2.h_cost = heuristic(child_node2.state)
-#         if not close_list.lookup(child_node1.state):
-#             open_list.insert(child_node1)
-#         if not close_list.lookup(child_node2.state):
-#             open_list.insert(child_node2)
-#     return None  
+        child_node1.h_cost = heuristic(child_node1.state)
+        child_node2.h_cost = heuristic(child_node2.state)
+        if not close_list.lookup(child_node1.state):
+            open_list.insert(child_node1)
+        if not close_list.lookup(child_node2.state):
+            open_list.insert(child_node2)
+    return None  
