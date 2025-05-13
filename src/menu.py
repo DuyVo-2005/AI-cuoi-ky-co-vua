@@ -15,7 +15,7 @@ from matplotlib.figure import Figure
 from translation import translate
 from algorithm import *
 from tam_hau.index import tam_hau
-from ma_di_tuan import solve_knights_tour
+from ma_di_tuan import solve_knights_tour_backtracking, solve_knights_tour_a_star
 from king_and_pawn_move import enemy_capture_moves
 from search_with_no_observation_algoritm import search_with_no_observation_solve
 
