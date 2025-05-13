@@ -1,18 +1,19 @@
 from dataStructures import OpenList, CloseList, SearchNode, extract_path, make_node
-from king_move import generate_king_moves
+from king_and_pawn_move import generate_king_moves
 
 from collections import deque
 import math
 import random
 
-end_state_tuple = (7,7)
+end_state_tuple = (8,17)
 
 def is_goal(state:tuple) -> bool:
-    global end_state_tuple
     return state == end_state_tuple
             
-def uninformed_search(root: SearchNode, type: str, level:int):
+def uninformed_search(root: SearchNode, type: str, pos_not_move: list):
     global visited_nodes
+    print(root.state)
+    print(end_state_tuple)
     open_list = OpenList(type)
     open_list.insert(root)
     close_list = CloseList()
@@ -28,14 +29,14 @@ def uninformed_search(root: SearchNode, type: str, level:int):
             visited_nodes = close_list
             return extract_path(n)
         
-        for action, new_state in generate_king_moves(n.state, level):
+        for action, new_state in generate_king_moves(n.state, pos_not_move):
             if not close_list.lookup(new_state):#
                 new_node = make_node(n, action, new_state)
                 open_list.insert(new_node)
     visited_nodes = close_list
     return None
 
-def DeepLimitedSearch(node: SearchNode, depth_limit, level:int):
+def DeepLimitedSearch(node: SearchNode, depth_limit, pos_not_move: list):
     stack = [(node, [])]# Stack chứa (node, path)
     close_list = CloseList()
     global visited_nodes
@@ -50,23 +51,23 @@ def DeepLimitedSearch(node: SearchNode, depth_limit, level:int):
         close_list.insert(current_node.state) # Đánh dấu đã xét
         
         if len(path) < depth_limit:  #mở rộng nếu chưa đạt depth_limit
-            for action, new_state in generate_king_moves(current_node.state, level):
+            for action, new_state in generate_king_moves(current_node.state, pos_not_move):
                 if not close_list.lookup(new_state):
                     new_node = make_node(current_node, action, new_state)
                     stack.append((new_node, path + [new_state]))
     visited_nodes = close_list
     return None
        
-def IDS(root: SearchNode, level:int):
+def IDS(root: SearchNode, pos_not_move: list):
     max_depth = 1000000000000
     for depth in range(max_depth + 1):
-        solution = DeepLimitedSearch(root, depth, level)
+        solution = DeepLimitedSearch(root, depth, pos_not_move)
         if solution != None:
             return solution
     return None
     
 
-def UCS(root: SearchNode, level:int):
+def UCS(root: SearchNode, pos_not_move: list):
     global visited_nodes
     open_list = OpenList("UCS")
     open_list.insert(root)
@@ -83,7 +84,7 @@ def UCS(root: SearchNode, level:int):
         
         close_list.insert(current_node.state)
         
-        for action, new_state in generate_king_moves(current_node.state, level):
+        for action, new_state in generate_king_moves(current_node.state, pos_not_move):
             if not close_list.lookup(new_state):
                 new_node = make_node(current_node, action, new_state)
                 open_list.insert(new_node) 
@@ -94,7 +95,7 @@ def heuristic(state: tuple) -> int:
     global end_state_tuple
     return abs(state[0] - end_state_tuple[0]) + abs(state[1] - end_state_tuple[1])
 
-def Greedy(root: SearchNode, level:int):
+def Greedy(root: SearchNode, pos_not_move: list):
     global visited_nodes
     queue = deque()
     queue.append((root, heuristic(root.state)))
@@ -113,14 +114,14 @@ def Greedy(root: SearchNode, level:int):
         
         close_list.insert(current_node.state)
         
-        for action, new_state in generate_king_moves(current_node.state, level):
+        for action, new_state in generate_king_moves(current_node.state, pos_not_move):
             if not close_list.lookup(new_state):
                 new_node = make_node(current_node, action, new_state)
                 queue.append((new_node, heuristic(new_node.state)))
     visited_nodes = close_list
     return None
 
-def A_start(root: SearchNode, level:int):
+def A_start(root: SearchNode, pos_not_move: list):
     # f(n) = g(n) + h(n) = node_cost + heristic
     global visited_nodes
     queue = deque()
@@ -140,7 +141,7 @@ def A_start(root: SearchNode, level:int):
         
         close_list.insert(current_node.state)
         
-        for action, new_state in generate_king_moves(current_node.state, level):
+        for action, new_state in generate_king_moves(current_node.state, pos_not_move):
             if not close_list.lookup(new_state):
                 new_node = make_node(current_node, action, new_state)
                 queue.append((new_node, new_node.g_cost + heuristic(new_node.state)))
@@ -148,8 +149,8 @@ def A_start(root: SearchNode, level:int):
     return None
 
 # IDA* tăng ngưỡng xét từ vd 0, 2, 4, 6 (mỗi lần xét chỉ lấy giá trị bé hơn hoặc bằng ngưỡng)
-def IDA_star(root: SearchNode, level: int):
-    def search(node: SearchNode, path: set, threshold, level: int):# Tìm kiếm theo DFS với giới hạn threshold
+def IDA_star(root: SearchNode, pos_not_move: list):
+    def search(node: SearchNode, path: set, threshold, pos_not_move: list):# Tìm kiếm theo DFS với giới hạn threshold
         f_cost = node.g_cost + heuristic(node.state)
         if f_cost > threshold:
             return f_cost, None
@@ -157,11 +158,11 @@ def IDA_star(root: SearchNode, level: int):
             return None, extract_path(node)
         min_threshold = float("inf")
         path.add(node.state)
-        for action, new_state in generate_king_moves(node.state, level):
+        for action, new_state in generate_king_moves(node.state, pos_not_move):
             if new_state in path:
                 continue  
             new_node = make_node(node, action, new_state)
-            result, found_path = search(new_node, path.copy(), threshold, level)# Truyền bản sao của path
+            result, found_path = search(new_node, path.copy(), threshold, pos_not_move)# Truyền bản sao của path
             if found_path:
                 return None, found_path
 
@@ -173,19 +174,19 @@ def IDA_star(root: SearchNode, level: int):
     threshold = root.g_cost + heuristic(root.state)
     while True:
         close_list = CloseList()
-        new_threshold, path = search(root, close_list.set, threshold, level)
+        new_threshold, path = search(root, close_list.set, threshold, pos_not_move)
         if path:
             return path
         if new_threshold == float("inf"):# Không tìm thấy lời giải
             return None
         threshold = new_threshold
  
-def simple_hill_climbing(root: SearchNode, level: int):
+def simple_hill_climbing(root: SearchNode, pos_not_move: list):
     current_node = root
     while True:
         if is_goal(current_node.state):
             return extract_path(current_node)
-        neighbors = generate_king_moves(current_node.state, level)
+        neighbors = generate_king_moves(current_node.state, pos_not_move)
         if not neighbors:
             return None
         for action, state in neighbors:
@@ -195,12 +196,12 @@ def simple_hill_climbing(root: SearchNode, level: int):
         else:
             return None
 
-def steepest_ascent_hill_climbing(root: SearchNode, level: int):
+def steepest_ascent_hill_climbing(root: SearchNode, pos_not_move: list):
     current_node = root
     while True:
         if is_goal(current_node.state):
             return extract_path(current_node)
-        neighbors = generate_king_moves(current_node.state, level)#Trả về (action, state)
+        neighbors = generate_king_moves(current_node.state, pos_not_move)#Trả về (action, state)
         if not neighbors:
             return None
         best_neighbor = min(neighbors, key=lambda x: heuristic(x[1]))#Chọn hàng xóm tốt nhất theo heuristic nhỏ nhất
@@ -209,12 +210,12 @@ def steepest_ascent_hill_climbing(root: SearchNode, level: int):
         current_node = make_node(current_node, best_neighbor[0], best_neighbor[1])#Tạo node mới để lưu đường đi
 
 # được quay lui nếu còn con của node hiện tại
-def stochastic_hill_climbing(root: SearchNode, level):#leo đồi ngẫu nhiên
+def stochastic_hill_climbing(root: SearchNode, pos_not_move):#leo đồi ngẫu nhiên
     current_node = root
     while True:
         if is_goal(current_node.state):
             return extract_path(current_node)
-        neighbors = generate_king_moves(current_node.state, level)#Trả về (action, state)
+        neighbors = generate_king_moves(current_node.state, pos_not_move)#Trả về (action, state)
         if not neighbors:
             return None
         random.shuffle(neighbors)  # Trộn ngẫu nhiên danh sách hàng xóm
@@ -226,7 +227,7 @@ def stochastic_hill_climbing(root: SearchNode, level):#leo đồi ngẫu nhiên
             return None
 
 
-def stimulated_annealing(root: SearchNode, level):
+def stimulated_annealing(root: SearchNode, pos_not_move):
     max_iterations = 100000
     current_node = root
     iteration = 0
@@ -235,7 +236,7 @@ def stimulated_annealing(root: SearchNode, level):
         iteration += 1
         if is_goal(current_node.state):
             return extract_path(current_node)
-        neighbors = generate_king_moves(current_node.state, level)#Trả về (action, state)
+        neighbors = generate_king_moves(current_node.state, pos_not_move)#Trả về (action, state)
         if not neighbors:
             return None
         random.shuffle(neighbors)#Trộn ngẫu nhiên danh sách hàng xóm
@@ -264,7 +265,7 @@ def stimulated_annealing(root: SearchNode, level):
             T = anpha * T #Giảm nhiệt độ
             
 # Tìm k (vd 2 hoặc ít hơn) node tốt nhất xét tiếp
-def Beam_search(root: SearchNode, level):
+def Beam_search(root: SearchNode, pos_not_move):
     global end_state_tuple, visited_nodes
     #beam_width = 2
     open_list = OpenList("Beam search")# priority queue of ucs
@@ -278,7 +279,7 @@ def Beam_search(root: SearchNode, level):
         if is_goal(current_node.state):
             visited_nodes = close_list
             return extract_path(current_node)
-        neighbors, neighbors2 = generate_king_moves(current_node.state, level), None
+        neighbors, neighbors2 = generate_king_moves(current_node.state, pos_not_move), None
         
         if len(open_list.deque) >= 2:
             current_node2 = open_list.pop()[1]
@@ -286,7 +287,7 @@ def Beam_search(root: SearchNode, level):
             if is_goal(current_node2.state):
                 visited_nodes = close_list
                 return extract_path(current_node2)
-            neighbors2 = generate_king_moves(current_node2.state, level)
+            neighbors2 = generate_king_moves(current_node2.state, pos_not_move)
         
         if not neighbors and not neighbors2:
             return None
@@ -344,7 +345,7 @@ def mutate(individual:tuple)->tuple:
     individual[i], individual[j] = individual[j], individual[i]
     return tuple(individual)
 
-def genetic_algorithm(root: SearchNode, level: int):
+def genetic_algorithm(root: SearchNode, pos_not_move: list):
     """không cần truy xuất đường đi"""
     if is_goal(root.state):
         return "Found goal state"
@@ -352,7 +353,7 @@ def genetic_algorithm(root: SearchNode, level: int):
     open_list = OpenList("Genetic algorithm")
     close_list = CloseList()
     close_list.insert(root.state)
-    populations_state = generate_king_moves(root.state, level)
+    populations_state = generate_king_moves(root.state, pos_not_move)
     for action, state in populations_state:
         if not close_list.lookup(state):
             new_node = make_node(root, action, state)

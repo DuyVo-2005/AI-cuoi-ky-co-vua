@@ -10,7 +10,7 @@ import chess
 
 class Board:
     def __init__(self, game, fen="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"):
-        self.game = game
+        self.game = game        
         # Tạo mảng 8x8 để thêm các quân cờ sau đó
         self.squares = [[0, 0, 0, 0, 0, 0, 0, 0] for col in range(COLS)]
         # Chứa thông tin của nước đi gần nhất

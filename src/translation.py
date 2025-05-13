@@ -17,6 +17,8 @@ translations = {
     "Người với máy": "Player vs bot",
     "Máy với máy": "Bot vs bot",
     "Cuộc tẩu thoát của vua": "The king's Escape",
+    "Quân tám hậu": "Eight queens",
+    "Mã đi tuần": "Knight's Tour",
     "Chọn tên thuật toán": "Chose algorithm name",
     "Chọn cấp độ": "Chose level",
     "Giải": "Solve",
