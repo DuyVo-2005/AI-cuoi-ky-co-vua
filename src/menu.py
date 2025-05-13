@@ -158,7 +158,7 @@ class KnightsTourFrame(tk.Frame):
         try:
             print("Bắt đầu giải Mã đi tuần...")
             start_time = time.time()
-            self.solution_path = solve_knights_tour(self.board_dim)
+            self.solution_path = solve_knights_tour_backtracking(self.board_dim)
             end_time = time.time()
             solve_time = end_time - start_time
             print(f"Giải xong trong {solve_time:.4f} giây.")
@@ -322,7 +322,7 @@ class ChartFrame(tk.Frame):
 
     def load_data(self):
         try:
-            data_path = os.path.join(DUONG_DAN_THU_MUC_HIEN_HANH, 'data.csv')
+            data_path = os.path.join(CURRENT_DIRECTORY_PATH, 'data.csv')
             self.df = pd.read_csv(data_path)
             print(f"DEBUG: Đã tải dữ liệu từ {data_path}. Số dòng: {len(self.df)}")
             if not all(col in self.df.columns for col in ['Level', 'Tên thuật toán', 'Thời gian thực thi', 'Số bước di chuyển']):
