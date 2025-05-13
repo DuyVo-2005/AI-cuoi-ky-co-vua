@@ -741,6 +741,7 @@ def show_king_tour_screen(algorthm_name: str, level: int):
                     if event.type == pygame.QUIT:
                         pygame.quit()
                         # exit()
+                        return
                 screen.fill((0, 0, 0))
                 draw_board()
                 draw_image(pos, king_img)
@@ -757,6 +758,7 @@ def show_king_tour_screen(algorthm_name: str, level: int):
                     if event.type == pygame.QUIT:
                         pygame.quit()
                         # exit()
+                        return
                 screen.fill((0, 0, 0))
                 draw_board()
                 draw_image(display_path[pos], king_img)
@@ -826,8 +828,6 @@ def show_king_tour_screen(algorthm_name: str, level: int):
         solution = stimulated_annealing(root, pos_not_move)
     elif algorthm_name == "Beam search":
         solution = Beam_search(root, pos_not_move)
-    elif algorthm_name == "Genetic algorithm":
-        solution = genetic_algorithm(root, pos_not_move)
     end_time = time.perf_counter()
     
     if solution != None:
@@ -839,12 +839,9 @@ def show_king_tour_screen(algorthm_name: str, level: int):
             print(solution)
             print(solution2)
             play_king_animation([solution, solution2], enimies_positions, is_complex_environmnet=True)
-        else:
-            if algorthm_name == "Genetic algorithm":
-                messagebox.showinfo(translate(language, "Thông báo"), translate(language, "Tìm ra lời giải bằng Genetic algorithm"))
-            else:                                     
-                print(f"Giải pháp: {solution}")
-                play_king_animation(solution, enimies_positions)
+        else:                          
+            print(f"Giải pháp: {solution}")
+            play_king_animation(solution, enimies_positions)
     else:
         messagebox.showinfo(translate(language, "Thông báo"), translate(language, "Không tìm ra lời giải"))
         
@@ -877,7 +874,7 @@ class KingBotSetupFrame(tk.Frame):
         tk.Label(self, text=translate(language, "Chọn tên thuật toán"), font=("Times New Roman", 15, "bold"), bg = "#FFCC33", fg="#008080").pack(pady=10)
         self.algorithm_type_ccb = ttk.Combobox(self, values=["BFS", "DFS", "UCS", "IDS", "Greedy", "A*", "IDA*", "Simple hill climbing",
                                     "Steepest ascent hill climbing", "Stochastic hill climbing", "Stimulated annealing",
-                                    "Beam search", "Genetic algorithm", "Search with no observation"], width=BUTTON_WIDTH + 10)
+                                    "Beam search", "Search with no observation"], width=BUTTON_WIDTH + 10)
         self.algorithm_type_ccb.pack(pady=5)
         self.algorithm_type_ccb.current(0)
         tk.Label(self, text=translate(language, "Chọn cấp độ"), font=("Times New Roman", 15, "bold"), bg = "#FFCC33", fg="#008080").pack(pady=10)
