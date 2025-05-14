@@ -5,6 +5,7 @@ from collections import deque
 import math
 import random
 import os
+import numpy
 
 end_state_tuple = (8,17)
 visited_nodes = None
@@ -250,7 +251,6 @@ def stochastic_hill_climbing(root: SearchNode, pos_not_move):#leo đồi ngẫu 
         else:
             return None
 
-
 def stimulated_annealing(root: SearchNode, pos_not_move):
     max_iterations = 100000
     current_node = root
@@ -271,22 +271,12 @@ def stimulated_annealing(root: SearchNode, pos_not_move):
         else:
             state_and_cost_list = []
             for action, new_state in neighbors:
-                if T < 1e-3:
-                    p = 1e-10
-                else:
-                    #p = pow(math.e, -(heuristic(current_node.state) - heuristic(new_state))/T)#Xác suất
-                    
-                    delta_E = heuristic(new_state) - heuristic(current_node.state)
-                    #math.exp(709) số lớn nhất Python có thể xử lý
-                    #math.exp(-709) là số rất nhỏ gần 0, không gây lỗi.
-                    # p = math.exp(min(709, max(-709, delta_E / T)))
-                    p = math.exp(max(-709, -delta_E / T))
-                    
-                state_and_cost_list.append((action, new_state, p))
-            min_p_node = min(state_and_cost_list, key=lambda x: x[1])
+                p = numpy.exp(-(heuristic(current_node.state) - heuristic(new_state)) / T)
+                state_and_cost_list.append((action, new_state, p))           
+            min_p_node = max(state_and_cost_list, key=lambda x: x[2])
             current_node = make_node(current_node, min_p_node[0], min_p_node[1])
             anpha = random.uniform(0, 1)
-            T = anpha * T #Giảm nhiệt độ
+            T = anpha * T #Giảm nhiệt độ với anphal hệ số làm nguội
             
 # Tìm k (vd 2 hoặc ít hơn) node tốt nhất xét tiếp
 def Beam_search(root: SearchNode, pos_not_move):
