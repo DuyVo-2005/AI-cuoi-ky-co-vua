@@ -273,8 +273,8 @@ def stimulated_annealing(root: SearchNode, pos_not_move):
             for action, new_state in neighbors:
                 p = numpy.exp(-(heuristic(current_node.state) - heuristic(new_state)) / T)
                 state_and_cost_list.append((action, new_state, p))           
-            min_p_node = max(state_and_cost_list, key=lambda x: x[2])
-            current_node = make_node(current_node, min_p_node[0], min_p_node[1])
+            max_p_node = max(state_and_cost_list, key=lambda x: x[2])#biến xác suất cao chọn
+            current_node = make_node(current_node, max_p_node[0], max_p_node[1])
             anpha = random.uniform(0, 1)
             T = anpha * T #Giảm nhiệt độ với anphal hệ số làm nguội
             
