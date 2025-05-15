@@ -7,11 +7,13 @@
 | Võ Lê Khánh Duy | 23110196 |
 | Phan Đình Sáng | 23110303 |
 ## Phân công
-Quốc: main, board, dragger, bot, bot logic, minimax, bài toán quân 8 hậu
+Quốc: main, board, dragger, bot, bot logic, minimax, bài toán quân 8 hậu, ...
 
-Sáng: const, sound, theme, color, config, game, bài toán mã đi tuần
+Sáng: const, sound, theme, color, config, game, bài toán mã đi tuần, ...
 
-Duy: square, piece, move, menu gui, dataStructure, bài toán vua tẩu thoát
+Duy: square, piece, move, menu gui, dataStructure, bài toán vua tẩu thoát, ...
+## Nội dung
+# 1. Thuật toán MiniMax và Cắt tỉa Alpha-Beta trong cờ Vua
 ## Tài liệu tham khảo 
 [1].	Stuart Russell and Peter Norvig, "Russell 2020 Artificial intelligence a modern approach", xuất bản lần 4
 
