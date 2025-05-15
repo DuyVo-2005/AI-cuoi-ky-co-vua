@@ -38,6 +38,10 @@ Hàm đánh giá khá đơn giản, chỉ tính tổng số lượng và chất 
 
 ### 2. Chạy thực nghiệm
 
+https://github.com/user-attachments/assets/27e23564-bc2d-4694-80ec-d7b5d6b37bbd
+
+
+
 ## Tài liệu tham khảo 
 [1].	Stuart Russell and Peter Norvig, "Russell 2020 Artificial intelligence a modern approach", xuất bản lần 4
 
