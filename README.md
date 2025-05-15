@@ -1,5 +1,3 @@
-
-https://github.com/user-attachments/assets/d2875a59-0ce0-44b9-a37c-36d6e4698bc9
 # AI-cuoi-ky-co-vua
 
 ## Nội dung
