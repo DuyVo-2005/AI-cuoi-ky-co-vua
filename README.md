@@ -13,7 +13,7 @@ Sáng: const, sound, theme, color, config, game, bài toán mã đi tuần, ...
 
 Duy: square, piece, move, menu gui, dataStructure, bài toán vua tẩu thoát, ...
 ## Nội dung
-# 1. Thuật toán MiniMax và Cắt tỉa Alpha-Beta trong cờ Vua
+### 1. Thuật toán MiniMax và Cắt tỉa Alpha-Beta trong cờ Vua
 ## Tài liệu tham khảo 
 [1].	Stuart Russell and Peter Norvig, "Russell 2020 Artificial intelligence a modern approach", xuất bản lần 4
 
