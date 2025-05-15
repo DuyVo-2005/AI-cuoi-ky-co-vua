@@ -114,6 +114,9 @@ Mục tiêu: đi qua tất cả N×N ô trên bàn cờ.
 
 https://github.com/user-attachments/assets/6b31fb3e-83c6-4ace-9667-c0945cad1297
 
+### 5. Mini Game Vua Tẩu thoát
+
+
 
 
 ## Tài liệu tham khảo 
