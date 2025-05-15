@@ -124,14 +124,36 @@ Thuật toán BFS
 
 Thuật toán DFS
 
+https://github.com/user-attachments/assets/946fc8bc-6c04-4a35-9673-554c64aacae2
+
+
 Thuật toán UCS
 
 ![ucs_l3](https://github.com/user-attachments/assets/d306f027-f22c-4327-8ea5-84f740bed67f)
+
+Thuật toán Greedy
+
+https://github.com/user-attachments/assets/357b2056-df78-416e-8d13-77a624e68f14
+
 
 Thuật toán A*
 
 https://github.com/user-attachments/assets/a4473fe8-bff5-46ba-bb21-ed82eeedf138
 
+Thuật toán IDA*
+
+https://github.com/user-attachments/assets/edf086d1-f945-4c34-b8bf-d4cc8e0da27b
+
+
+Thuật toán simple hill climbing
+
+[Uploading Sync.pdf…]()
+![shc_l3 mp4](https://github.com/user-attachments/assets/68b4609b-cf98-4224-90e7-59c672e70d51)
+
+
+Thuật toán stochastic hill climbing
+
+https://github.com/user-attachments/assets/ec834242-8227-40ca-a229-5a8ae0d0e965
 
 
 ## Tài liệu tham khảo 
