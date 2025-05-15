@@ -40,6 +40,25 @@ Hàm đánh giá khá đơn giản, chỉ tính tổng số lượng và chất 
 
 https://github.com/user-attachments/assets/27e23564-bc2d-4694-80ec-d7b5d6b37bbd
 
+### 3. Mini Game 8 Quân Hậu
+
+#### Tạo Q-Learning Model 
+
+![image](https://github.com/user-attachments/assets/123b7e49-38ab-4429-95dd-c079c9088b59)
+
+#### Giải Bài toán 8 Hậu với các Model vừa tạo
+
+Trường hợp giải thành công với Model được Train nhiều lần:
+![image](https://github.com/user-attachments/assets/52340ef3-5ce5-433b-943f-7e2aeebb523d)
+
+Trường hợp giải thất bại với Model được Train ít:
+![image](https://github.com/user-attachments/assets/88a9e4a5-619f-4ecd-b461-cb948842239b)
+
+#### Thống kê tỉ lệ giải thành công của các Model được Train với các thông số khác nhau
+
+![image](https://github.com/user-attachments/assets/0755e09b-ddea-4156-886f-cb2513234ad4)
+
+Đây là biểu đồ Success Rate (Tỷ lệ thành công) của thuật toán Q-learning theo số lượng EPISODES (số lần huấn luyện), với các giá trị khác nhau của epsilon (ε) — tham số quan trọng trong chiến lược epsilon-greedy để cân bằng giữa khám phá (explore) và khai thác (exploit).
 
 
 ## Tài liệu tham khảo 
