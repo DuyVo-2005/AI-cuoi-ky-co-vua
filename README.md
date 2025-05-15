@@ -42,6 +42,33 @@ https://github.com/user-attachments/assets/27e23564-bc2d-4694-80ec-d7b5d6b37bbd
 
 ### 3. Mini Game 8 Quân Hậu
 
+#### Thuật toán Q-Learning
+
+🧠 Thuật toán Q-Learning là gì?
+
+Q-Learning là một thuật toán học tăng cường (Reinforcement Learning - RL) không mô hình (model-free), giúp một tác nhân (agent) học cách ra quyết định tối ưu trong môi trường bằng cách thử - sai và cập nhật dần dần giá trị kỳ vọng của hành động.
+
+⚙️ Mục tiêu
+
+Tìm ra chính sách tối ưu (optimal policy) để chọn hành động trong mỗi trạng thái sao cho tổng phần thưởng nhận được về lâu dài (cumulative reward) là lớn nhất.
+
+📌 Nguyên lý hoạt động
+
+Q-Learning sử dụng một bảng Q-Table với công thức cập nhật:
+
+![image](https://github.com/user-attachments/assets/c423c175-95a2-4f10-92ad-e727263c1f90)
+
+##### Trong đó
+
+| Ký hiệu | Ý nghĩa |
+|-------|-------|
+| Q(s,a) | Giá trị Q hiện tại tại trạng thái s, hành động a |
+| α | Hệ số học (learning rate) |
+| r | Phần thưởng nhận được sau khi thực hiện hành động a |
+| γ | Hệ số chiết khấu (discount factor), thường nằm giữa 0.9–0.99 |
+| s' | Trạng thái kế tiếp |
+| α' | Hành động kế tiếp (tốt nhất tại s') |
+
 #### Tạo Q-Learning Model 
 
 ![image](https://github.com/user-attachments/assets/123b7e49-38ab-4429-95dd-c079c9088b59)
@@ -49,9 +76,11 @@ https://github.com/user-attachments/assets/27e23564-bc2d-4694-80ec-d7b5d6b37bbd
 #### Giải Bài toán 8 Hậu với các Model vừa tạo
 
 Trường hợp giải thành công với Model được Train nhiều lần:
+
 ![image](https://github.com/user-attachments/assets/52340ef3-5ce5-433b-943f-7e2aeebb523d)
 
 Trường hợp giải thất bại với Model được Train ít:
+
 ![image](https://github.com/user-attachments/assets/88a9e4a5-619f-4ecd-b461-cb948842239b)
 
 #### Thống kê tỉ lệ giải thành công của các Model được Train với các thông số khác nhau
