@@ -89,6 +89,32 @@ Trường hợp giải thất bại với Model được Train ít:
 
 Đây là biểu đồ Success Rate (Tỷ lệ thành công) của thuật toán Q-learning theo số lượng EPISODES (số lần huấn luyện), với các giá trị khác nhau của epsilon (ε) — tham số quan trọng trong chiến lược epsilon-greedy để cân bằng giữa khám phá (explore) và khai thác (exploit).
 
+### 4. Mini Game Mã Đi Tuần
+
+#### ♞ Mã Đi Tuần là gì?
+
+Đây là bài toán yêu cầu tìm một hành trình của quân mã (Knight trong cờ vua) sao cho nó đi qua tất cả các ô trên bàn cờ đúng một lần duy nhất, theo luật di chuyển của quân mã.
+
+#### 🎯 Yêu cầu bài toán
+
+Tìm một chuỗi bước đi bắt đầu từ một ô bất kỳ.
+
+Mỗi ô được đi đúng một lần.
+
+Mục tiêu: đi qua tất cả N×N ô trên bàn cờ.
+
+#### 🧠 Phân loại lời giải
+
+| Loại tour | Mô tả |
+|-------|-------|
+| Open tour | Mã đi qua mọi ô một lần, không cần quay về vị trí đầu. |
+| Closed tour | 	Mã đi qua mọi ô một lần và quay lại vị trí ban đầu. |
+
+#### Video chạy thử nghiệm
+
+https://github.com/user-attachments/assets/6b31fb3e-83c6-4ace-9667-c0945cad1297
+
+
 
 ## Tài liệu tham khảo 
 [1].	Stuart Russell and Peter Norvig, "Russell 2020 Artificial intelligence a modern approach", xuất bản lần 4
