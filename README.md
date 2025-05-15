@@ -36,6 +36,8 @@ d: độ sâu.
 Chương trình cờ vua của nhóm sử dụng thuật toán MiniMax và Cắt tỉa Alpha-Beta với độ sâu tìm kiếm là 3 (depth=3). 
 Hàm đánh giá khá đơn giản, chỉ tính tổng số lượng và chất lượng của toàn bộ quân cờ trên bàn cờ.
 
+### 2. Chạy thực nghiệm
+
 ## Tài liệu tham khảo 
 [1].	Stuart Russell and Peter Norvig, "Russell 2020 Artificial intelligence a modern approach", xuất bản lần 4
 
