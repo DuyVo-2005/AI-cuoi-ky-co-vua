@@ -154,6 +154,11 @@ Thuật toán stochastic hill climbing
 
 https://github.com/user-attachments/assets/ec834242-8227-40ca-a229-5a8ae0d0e965
 
+Thuật toán Beam Search
+
+![beam_search_l3 mp4](https://github.com/user-attachments/assets/961b8814-c6e5-4fc7-887c-25007e92ab2c)
+
+
 
 ## Tài liệu tham khảo 
 [1].	Stuart Russell and Peter Norvig, "Russell 2020 Artificial intelligence a modern approach", xuất bản lần 4
