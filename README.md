@@ -1,17 +1,5 @@
 # AI-cuoi-ky-co-vua
 
-## Thành viên
-| Họ Tên | Mã số sinh viên |
-|-------|-------|
-| Vũ Anh Quốc | 23110296 |
-| Võ Lê Khánh Duy | 23110196 |
-| Phan Đình Sáng | 23110303 |
-## Phân công
-Quốc: main, board, dragger, bot, bot logic, minimax, bài toán quân 8 hậu, ...
-
-Sáng: const, sound, theme, color, config, game, bài toán mã đi tuần, ...
-
-Duy: square, piece, move, menu gui, dataStructure, bài toán vua tẩu thoát, ...
 ## Nội dung
 ### 1. Thuật toán MiniMax và Cắt tỉa Alpha-Beta trong cờ Vua
 ## Tài liệu tham khảo 
@@ -26,3 +14,17 @@ Duy: square, piece, move, menu gui, dataStructure, bài toán vua tẩu thoát, 
 [5].	Surajpatlcyj (2024), Sự lan truyền ràng buộc trong AI, truy cập ngày 12 tháng 5 năm 2025 từ https://www.geeksforgeeks.org/constraint-propagation-in-ai
 
 [6].	CamelEdge (2025), Giải quyết các vấn đề thỏa mãn ràng buộc trong AI: Quay lui, nhất quán Arc và Heuristics, truy cập ngày 12 tháng 5 năm 2025 từ https://cameledge.com/post/ai/constraint-satisfaction-problems
+
+## Thành viên
+| Họ Tên | Mã số sinh viên |
+|-------|-------|
+| Vũ Anh Quốc | 23110296 |
+| Võ Lê Khánh Duy | 23110196 |
+| Phan Đình Sáng | 23110303 |
+
+## Phân công
+Quốc: main, board, dragger, bot, bot logic, minimax, bài toán quân 8 hậu, ...
+
+Sáng: const, sound, theme, color, config, game, bài toán mã đi tuần, ...
+
+Duy: square, piece, move, menu gui, dataStructure, bài toán vua tẩu thoát, ...
