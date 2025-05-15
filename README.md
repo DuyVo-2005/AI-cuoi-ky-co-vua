@@ -118,6 +118,81 @@ https://github.com/user-attachments/assets/6b31fb3e-83c6-4ace-9667-c0945cad1297
 
 
 #### Video chạy thử nghiệm
+##### Level 1
+Thuật toán BFS
+
+![bfs_l1 mp4](https://github.com/user-attachments/assets/b403c05a-0188-43a6-8caf-8a88e2b75cc6)
+
+Thuật toán DFS
+
+![dfs_l1 mp4](https://github.com/user-attachments/assets/54de1a93-353d-4a33-96ff-994faeb31591)
+
+Thuật toán UCS
+
+![ucs_l1 mp4](https://github.com/user-attachments/assets/28ec1bf1-df86-416e-b7ae-bfa892743cbb)
+
+Thuật toán IDS
+
+![ids_l1 mp4](https://github.com/user-attachments/assets/ab6d1170-781b-4a27-824d-952017d9aae6)
+
+Thuật toán Greedy
+
+![greedy_l1 mp4](https://github.com/user-attachments/assets/48e4811f-f7be-485b-bd63-1c523ce4a0f8)
+
+Thuật toán A*
+
+![as_l1](https://github.com/user-attachments/assets/7df28b4a-b115-4bf1-be5f-602fd3b9f692)
+
+Thuật toán IDA*
+![idas_l1 mp4](https://github.com/user-attachments/assets/68ddf340-2b3c-4b09-9145-84546b37336b)
+
+Thuật toán Simple hill climbing
+
+![sim_hl_l1 mp4](https://github.com/user-attachments/assets/43b61acf-454f-4b07-82b0-862cf450fb34)
+
+Thuật toán Steepest ascent hill climbing
+
+![steepest_hc_l1 mp4](https://github.com/user-attachments/assets/59ec104e-bc66-4936-b7a4-ce3156c12eef)
+
+Thuật toán stochastic hill climbing
+
+![sto_hl_l1 mp4](https://github.com/user-attachments/assets/91bc44e7-7a2c-487f-b649-253e9c61e08c)
+
+Thuật toán Stimulated annealing
+
+![sa_l1 mp4](https://github.com/user-attachments/assets/eb860d25-70bb-484d-ae01-9d475159b9ef)
+
+Thuật toán Beam Search
+
+![beam_l1 mp4](https://github.com/user-attachments/assets/7ac78174-4d99-47cf-9254-ed4ccc4f8e80)
+
+Thuật toán search with no observation
+![no_ob_l1 mp4](https://github.com/user-attachments/assets/1c3712b2-cccf-4890-9bc1-5da13edc5a74)
+
+##### Level 2
+Thuật toán BFS
+
+Thuật toán DFS
+
+Thuật toán UCS
+
+Thuật toán Greedy
+
+Thuật toán A*
+
+Thuật toán IDA*
+
+Thuật toán Simple hill climbing
+
+Thuật toán Steepest ascent hill climbing
+
+Thuật toán stochastic hill climbing
+
+Thuật toán Stimulated annealing
+
+Thuật toán Beam Search
+
+Thuật toán search with no observation
 
 ##### Level 3
 Thuật toán BFS
@@ -134,7 +209,6 @@ Thuật toán UCS
 Thuật toán Greedy
 
 https://github.com/user-attachments/assets/357b2056-df78-416e-8d13-77a624e68f14
-
 
 Thuật toán A*
 
@@ -158,7 +232,30 @@ Thuật toán Beam Search
 
 ![beam_search_l3 mp4](https://github.com/user-attachments/assets/961b8814-c6e5-4fc7-887c-25007e92ab2c)
 
+##### Level 4
+Thuật toán BFS
 
+Thuật toán DFS
+
+Thuật toán UCS
+
+Thuật toán Greedy
+
+Thuật toán A*
+
+Thuật toán IDA*
+
+Thuật toán Simple hill climbing
+
+Thuật toán Steepest ascent hill climbing
+
+Thuật toán stochastic hill climbing
+
+Thuật toán Stimulated annealing
+
+Thuật toán Beam Search
+
+Thuật toán search with no observation
 
 ## Tài liệu tham khảo 
 [1].	Stuart Russell and Peter Norvig, "Russell 2020 Artificial intelligence a modern approach", xuất bản lần 4
