@@ -147,7 +147,6 @@ https://github.com/user-attachments/assets/edf086d1-f945-4c34-b8bf-d4cc8e0da27b
 
 Thuật toán simple hill climbing
 
-[Uploading Sync.pdf…]()
 ![shc_l3 mp4](https://github.com/user-attachments/assets/68b4609b-cf98-4224-90e7-59c672e70d51)
 
 
