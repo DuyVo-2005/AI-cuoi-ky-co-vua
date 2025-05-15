@@ -128,6 +128,11 @@ Thuật toán UCS
 
 ![ucs_l3](https://github.com/user-attachments/assets/d306f027-f22c-4327-8ea5-84f740bed67f)
 
+Thuật toán A*
+
+https://github.com/user-attachments/assets/a4473fe8-bff5-46ba-bb21-ed82eeedf138
+
+
 
 ## Tài liệu tham khảo 
 [1].	Stuart Russell and Peter Norvig, "Russell 2020 Artificial intelligence a modern approach", xuất bản lần 4
