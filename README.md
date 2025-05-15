@@ -1,3 +1,5 @@
+
+https://github.com/user-attachments/assets/d2875a59-0ce0-44b9-a37c-36d6e4698bc9
 # AI-cuoi-ky-co-vua
 
 ## Nội dung
@@ -117,6 +119,15 @@ https://github.com/user-attachments/assets/6b31fb3e-83c6-4ace-9667-c0945cad1297
 ### 5. Mini Game Vua Tẩu thoát
 
 
+#### Video chạy thử nghiệm
+
+##### Level 3
+Thuật toán BFS
+
+Thuật toán DFS
+
+Thuật toán UCS
+![ucs_l3](https://github.com/user-attachments/assets/d306f027-f22c-4327-8ea5-84f740bed67f)
 
 
 ## Tài liệu tham khảo 
