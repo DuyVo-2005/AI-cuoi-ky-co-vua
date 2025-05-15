@@ -2,6 +2,10 @@
 #Trạng thái trùng trong tập thì lấy 1
 #Search with no observation
 from collections import deque
+import os
+from copy import deepcopy
+
+number_of_open_space = 0
 
 SQSIZE = 75
 COLS = 18
@@ -23,6 +27,7 @@ goal_set = [
 
 max_depth = 10000
 danger_zones = set()
+CURRENT_DIRECTORY_PATH = os.path.dirname(__file__)
 
 def is_valid_move(x, y):
     """Hàm kiểm tra ô có hợp lệ"""
@@ -59,6 +64,8 @@ def is_goal_belief_set(belief):
 #     return state[1] == (17)
         
 def search_with_no_observation(initial_belief_set: list):
+    global number_of_open_space
+    number_of_open_space = 0
     queue = deque()
     visited = set()
     queue.append((initial_belief_set, []))
@@ -69,20 +76,25 @@ def search_with_no_observation(initial_belief_set: list):
         if frozen_belief_set in visited:
             continue
         visited.add(frozen_belief_set)
-        print("=====================")
-        print(f"Actions: {actions}\n")
-        print(f"Belief set (size={len(belief_set)}):")
-        for state in belief_set:
-            print(state)
-            print("----")
-        if is_goal_belief_set(belief_set):
-            print("Reached goal set!")
-            return actions
-        for action in MOVES:
-            new_belief = apply_action_to_belief(belief_set, action)
-            if new_belief:
-                queue.append((new_belief, actions + [action]))
+        
+        with open(CURRENT_DIRECTORY_PATH + "/result_no_observation.txt", "a", encoding="utf-8") as f:
+            #f.write("=====================")
+            f.write(f"Actions: {actions}\n")
+            f.write(f"Belief set (size={len(belief_set)}):")
+            for state in belief_set:
+                f.write(str(state))
+                f.write("----")
+            if is_goal_belief_set(belief_set):
+                print(f"Number of open space: {number_of_open_space}")
+                f.write("Reached goal set!")
+                return actions
+            for action in MOVES:
+                new_belief = apply_action_to_belief(belief_set, action)
+                number_of_open_space += 2
+                if new_belief:
+                    queue.append((new_belief, actions + [action]))
         depth += 1
+    print(f"Number of open space: {number_of_open_space}")  
     return None
 
 def search_with_no_observation_solve(initial_belief_set: list, attack_zone: list):
@@ -100,10 +112,9 @@ def search_with_no_observation_solve(initial_belief_set: list, attack_zone: list
         for state in initial_belief_set:
             for action in plan:
                 state = list(state)
-                state[0] += action[0]
-                state[1] += action[1]
-                if not is_valid_move(state[0], state[1]):
-                    continue
+                if is_valid_move(state[0] + action[0], state[1] + action[1]):
+                    state[0] += action[0]
+                    state[1] += action[1]
                 state = tuple(state)
                 if order_path == 1:
                     first_path += [state]

@@ -762,7 +762,7 @@ def show_king_tour_screen(algorthm_name: str, level: int):
                 screen.fill((0, 0, 0))
                 draw_board()
                 draw_image(display_path[pos], king_img)
-                draw_image(display_path[pos + len(path[0]) - 1], king_img)
+                draw_image(display_path[pos + len(path[0])], king_img)
                 for enemy_pos in enemies_positions:
                     draw_image(enemy_pos, enemies_img)
                     for attack_pos in enemy_capture_moves(enemy_pos):
