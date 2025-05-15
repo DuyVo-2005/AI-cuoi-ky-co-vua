@@ -37,7 +37,9 @@ Chương trình cờ vua của nhóm sử dụng thuật toán MiniMax và Cắt
 Hàm đánh giá khá đơn giản, chỉ tính tổng số lượng và chất lượng của toàn bộ quân cờ trên bàn cờ.
 
 ### 2. Chạy thực nghiệm
+
 **🎥 Video: Chạy thực nghiệm**
+
 https://github.com/user-attachments/assets/27e23564-bc2d-4694-80ec-d7b5d6b37bbd
 
 
