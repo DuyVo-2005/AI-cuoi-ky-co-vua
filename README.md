@@ -11,8 +11,9 @@ MiniMax tạo ra một cây trạng thái với:
 Nút MAX: lượt của máy (máy muốn tối đa hóa điểm số).
 Nút MIN: lượt của người chơi (máy giả định đối thủ sẽ giảm thiểu điểm số của nó).
 
-📉 Độ sâu (depth):
+##### 📉 Độ sâu (depth):
 Do cờ vua có quá nhiều biến thể, MiniMax thường cắt ở độ sâu giới hạn, ví dụ: 3–5 lượt đi (ply) để giảm chi phí tính toán.
+
 #### Cắt tỉa Alpha-Beta (Alpha-Beta Pruning)
 ##### 🎯 Mục tiêu:
 Tối ưu hóa MiniMax bằng cách cắt bỏ các nhánh không cần thiết (không ảnh hưởng đến kết quả cuối cùng).
@@ -30,6 +31,10 @@ Giảm đáng kể số lượng nút phải duyệt.
 Trong trường hợp lý tưởng (sắp xếp tốt), giảm độ phức tạp từ O(b^d) xuống còn O(b^(d/2)), với:
 b: branching factor (số nước đi trung bình mỗi lượt),
 d: độ sâu.
+
+#### Triển khai:
+Chương trình cờ vua của nhóm sử dụng thuật toán MiniMax và Cắt tỉa Alpha-Beta với độ sâu tìm kiếm là 3 (depth=3). 
+Hàm đánh giá khá đơn giản, chỉ tính tổng số lượng và chất lượng của toàn bộ quân cờ trên bàn cờ.
 
 ## Tài liệu tham khảo 
 [1].	Stuart Russell and Peter Norvig, "Russell 2020 Artificial intelligence a modern approach", xuất bản lần 4
