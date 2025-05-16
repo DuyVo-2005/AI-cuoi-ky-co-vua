@@ -295,6 +295,7 @@ def stochastic_hill_climbing(root: SearchNode, pos_not_move):#leo đồi ngẫu 
 
 def stimulated_annealing(root: SearchNode, pos_not_move):
     global visited_nodes
+    visited_nodes = CloseList()
     max_iterations = 100000
     current_node = root
     visited_nodes.insert(current_node.state)
@@ -324,7 +325,8 @@ def stimulated_annealing(root: SearchNode, pos_not_move):
             max_p_node = max(state_and_cost_list, key=lambda x: x[2])#biến xác suất cao chọn
             current_node = make_node(current_node, max_p_node[0], max_p_node[1])
             visited_nodes.insert(current_node.state)
-            anpha = random.uniform(0, 1)
+            #anpha = random.uniform(0, 1)
+            anpha = 0.0001
             T = anpha * T #Giảm nhiệt độ với anphal hệ số làm nguội
     show_path_in_file(None)
     return None
