@@ -1,4 +1,4 @@
-# AI-cuoi-ky-co-vua
+![as_l4 mp4](https://github.com/user-attachments/assets/1a19f4ba-bae5-41f2-a73c-8648439ebe78)# AI-cuoi-ky-co-vua
 
 ## Nội dung
 ### 1. Thuật toán MiniMax và Cắt tỉa Alpha-Beta trong cờ Vua
@@ -172,13 +172,21 @@ Thuật toán search with no observation
 ##### Level 2
 Thuật toán BFS
 
+![bfs_l2 mp4](https://github.com/user-attachments/assets/ee7c7061-7545-4bac-b703-c3f453156540)
+
 Thuật toán DFS
+
+![dfs_l2 mp4](https://github.com/user-attachments/assets/677b95f4-eda8-4c92-91e4-ffbfb4db5cb7)
 
 Thuật toán UCS
 
 Thuật toán Greedy
 
+![greedy_l2 mp4](https://github.com/user-attachments/assets/a9d2d6e7-bc89-4fc2-bb5b-8badf1d03149)
+
 Thuật toán A*
+
+![as_l2 mp4](https://github.com/user-attachments/assets/b060dd58-f372-4309-8c08-f484c3f4420a)
 
 Thuật toán IDA*
 
@@ -190,16 +198,24 @@ Thuật toán stochastic hill climbing
 
 Thuật toán Stimulated annealing
 
+
+
 Thuật toán Beam Search
+
+![beam_l2 mp4](https://github.com/user-attachments/assets/090ec5b2-c909-41e3-9766-5e2e018c5fc7)
 
 Thuật toán search with no observation
 
 ##### Level 3
 Thuật toán BFS
 
+![bfs_l3 mp4](https://github.com/user-attachments/assets/56a47118-9af7-4499-82d4-f7218c5daa95)
+
 Thuật toán DFS
 
 https://github.com/user-attachments/assets/946fc8bc-6c04-4a35-9673-554c64aacae2
+
+![dfs_l3 mp4](https://github.com/user-attachments/assets/0d2dc5dd-e98c-45b5-80ae-a98022538003)
 
 
 Thuật toán UCS
@@ -232,6 +248,10 @@ Thuật toán Beam Search
 
 ![beam_search_l3 mp4](https://github.com/user-attachments/assets/961b8814-c6e5-4fc7-887c-25007e92ab2c)
 
+Thuật toán search with no observation
+
+![search_no_ob_l3 mp4](https://github.com/user-attachments/assets/00b201fe-bf91-4b27-93cb-cb60aaf94817)
+
 ##### Level 4
 Thuật toán BFS
 
@@ -239,9 +259,15 @@ Thuật toán DFS
 
 Thuật toán UCS
 
+![ucs_l4 mp4](https://github.com/user-attachments/assets/00010bfe-144c-446f-9266-4f6040d3ca6b)
+
 Thuật toán Greedy
 
+![greedy_l4 mp4](https://github.com/user-attachments/assets/fc8186dc-f776-4919-a83a-5b8d11962da8)
+
 Thuật toán A*
+
+![as_l4 mp4](https://github.com/user-attachments/assets/d47b2849-3b60-4d1e-a34e-ed323f7bb6cb)
 
 Thuật toán IDA*
 
@@ -249,13 +275,18 @@ Thuật toán Simple hill climbing
 
 Thuật toán Steepest ascent hill climbing
 
+![stepest_ahc_l4 mp4](https://github.com/user-attachments/assets/affaa216-d13c-435c-b12c-f0c3478e96ec)
+
 Thuật toán stochastic hill climbing
+
 
 Thuật toán Stimulated annealing
 
 Thuật toán Beam Search
 
 Thuật toán search with no observation
+
+![search_no_ob_l4 mp4](https://github.com/user-attachments/assets/c8551a57-ceca-4e2e-a226-a48843b04878)
 
 ## Tài liệu tham khảo 
 [1].	Stuart Russell and Peter Norvig, "Russell 2020 Artificial intelligence a modern approach", xuất bản lần 4
