@@ -236,7 +236,7 @@ Thuật toán DFS
 
 Thuật toán UCS
 
-![ucs_l3](https://github.com/user-attachments/assets/d306f027-f22c-4327-8ea5-84f740bed67f)
+![ucs_l3 mp4](https://github.com/user-attachments/assets/16a375ef-3f0b-42e3-874f-fc035cc80107)
 
 Thuật toán IDS
 
