@@ -85,13 +85,14 @@ Trường hợp giải thất bại với Model được Train ít:
 
 #### Thống kê tỉ lệ giải thành công của các Model được Train với các thông số khác nhau
 
-![image](https://github.com/user-attachments/assets/0755e09b-ddea-4156-886f-cb2513234ad4)
-
 Đây là biểu đồ Success Rate (Tỷ lệ thành công) của thuật toán Q-learning theo số lượng EPISODES (số lần huấn luyện), với các giá trị khác nhau của epsilon (ε) — tham số quan trọng trong chiến lược epsilon-greedy để cân bằng giữa khám phá (explore) và khai thác (exploit).
+
+![image](https://github.com/user-attachments/assets/0755e09b-ddea-4156-886f-cb2513234ad4)
 
  ![image](https://github.com/user-attachments/assets/2ac3e305-b06b-481f-9b35-cdf4156eed30)
 
 (So sánh thời gian chạy của các thuật toán)
+
 Nhận xét chi tiết:
 -	Thuật toán Backtracking: Thời gian chạy là 0.0000 giây (làm tròn vì số rất bé) — cực kỳ nhanh. Đây là thuật toán được tối ưu rất tốt cho bài toán 8 hậu và có thể giải gần như ngay lập tức.
 -	DFS (Depth-First Search): Thời gian chạy là 0.0010 giây — rất nhanh nhưng chậm hơn Backtracking một chút. DFS không đảm bảo tìm lời giải tối ưu hoặc nhanh nhất trong mọi tình huống, nhưng vẫn hoạt động hiệu quả ở đây.
@@ -102,6 +103,7 @@ Nhận xét chi tiết:
  ![image](https://github.com/user-attachments/assets/def7d9a9-e108-464d-b059-77db16e275f0)
 
 (So sánh không gian mở rộng của các thuật toán)
+
 Nhận xét chi tiết:
 -	Backtracking (89 trạng thái mở rộng): Thuật toán này mở rộng ít trạng thái nhất, thể hiện sự hiệu quả trong việc cắt nhánh và loại bỏ sớm các trường hợp không khả thi. Đây là lý do nó thường được sử dụng để giải bài toán 8 hậu một cách tối ưu.
 -	DFS (1473 trạng thái mở rộng): DFS mở rộng nhiều trạng thái hơn so với Backtracking, bởi nó không có cơ chế cắt nhánh hiệu quả bằng. Vì vậy, thuật toán phải duyệt qua nhiều trạng thái hơn, dẫn đến chi phí tính toán cao hơn.
