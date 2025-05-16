@@ -438,3 +438,7 @@ Quốc: main, board, dragger, bot, bot logic, minimax, bài toán quân 8 hậu.
 Sáng: const, sound, theme, color, config, game, bài toán mã đi tuần.
 
 Duy: square, piece, move, menu gui, dataStructure, bài toán vua tẩu thoát.
+
+## Hướng dẫn mở game
+
+https://github.com/user-attachments/assets/ce1ee342-e425-41b7-a5db-580e4c2a3a5e
