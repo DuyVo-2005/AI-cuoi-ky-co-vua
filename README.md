@@ -1,4 +1,4 @@
-![as_l4 mp4](https://github.com/user-attachments/assets/1a19f4ba-bae5-41f2-a73c-8648439ebe78)# AI-cuoi-ky-co-vua
+# Đồ án cuối kỳ nhập môn trí tuệ nhân tạo - Đề tài ứng dụng AI vào cờ vua
 
 ## Nội dung
 ### 1. Thuật toán MiniMax và Cắt tỉa Alpha-Beta trong cờ Vua
