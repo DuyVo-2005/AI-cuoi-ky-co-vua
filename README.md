@@ -244,15 +244,15 @@ Thuật toán IDS
 
 Thuật toán Greedy
 
-https://github.com/user-attachments/assets/357b2056-df78-416e-8d13-77a624e68f14
+![greedy_l3 mp4](https://github.com/user-attachments/assets/d75b83e5-b876-49bb-804f-86c0445189c8)
 
 Thuật toán A*
 
-https://github.com/user-attachments/assets/a4473fe8-bff5-46ba-bb21-ed82eeedf138
+![as_l3 mp4](https://github.com/user-attachments/assets/4e065cd7-1be8-4712-95fa-75e95a7a2a9e)
 
 Thuật toán IDA*
 
-https://github.com/user-attachments/assets/edf086d1-f945-4c34-b8bf-d4cc8e0da27b
+![ida_start_l3 mp4](https://github.com/user-attachments/assets/a177b59a-d609-42c7-9948-0700fb255a9b)
 
 Thuật toán simple hill climbing
 
