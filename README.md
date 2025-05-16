@@ -350,6 +350,68 @@ Thuật toán search with no observation
 
 ![search_no_ob_l4 mp4](https://github.com/user-attachments/assets/c8551a57-ceca-4e2e-a226-a48843b04878)
 
+#### Đánh giá các thuật toán sử dụng trong trò "Vua tẩu thoát" qua biểu đồ
+##### Một số hình ảnh thống kê về thời gian thực thi
+![image](https://github.com/user-attachments/assets/e67799e4-4e3e-4ece-805d-5ff8172e64fe)
+
+![image](https://github.com/user-attachments/assets/184f3e56-e3e2-41c7-afc6-d6239fddf87a)
+
+![image](https://github.com/user-attachments/assets/7cd82bc3-289f-4ea2-aa85-28cfb8eb2507)
+
+![image](https://github.com/user-attachments/assets/244b46f9-e11b-4441-8841-3477822ef3a9)
+
+![image](https://github.com/user-attachments/assets/0b051fdc-a5c5-4c0a-b1c7-4114ba9d9cdc)
+
+![image](https://github.com/user-attachments/assets/0527f835-0054-4fbc-a234-0aecb63266bc)
+
+![image](https://github.com/user-attachments/assets/5fd539a5-822f-4a89-9a85-b28ee729f13a)
+
+![image](https://github.com/user-attachments/assets/7a986d43-d310-4bf7-ace4-8b149ab1502e)
+##### Một số hình ảnh thống kê về số bước trong lời giải
+![image](https://github.com/user-attachments/assets/7f53d30a-6181-4541-8f6d-e2faffd2fabe)
+
+![image](https://github.com/user-attachments/assets/08299615-565d-450d-9a8f-acc9052900e4)
+
+![image](https://github.com/user-attachments/assets/db0b5628-d7a1-4639-82ee-5dcc2549f61e)
+
+![image](https://github.com/user-attachments/assets/1f41ac1f-3ca2-4e6c-a6e2-2645d3498d87)
+
+##### Một số hình ảnh thống kê về số không gian trạng thái mở rộng
+![image](https://github.com/user-attachments/assets/08a62342-18e2-4708-a07b-519a5ffa9456)
+
+![image](https://github.com/user-attachments/assets/0dc0b7be-adbc-4017-8435-ac14e636ea12)
+
+![image](https://github.com/user-attachments/assets/be0d066a-dbe7-4ec1-bef8-f2336786124b)
+
+![image](https://github.com/user-attachments/assets/99c15af1-69b7-467c-9fc8-b5ff0aca91c9)
+
+![image](https://github.com/user-attachments/assets/37e6bc8e-9cab-4914-aec3-5b935b46d8ab)
+
+![image](https://github.com/user-attachments/assets/98b73168-db82-466a-a501-09c449a9898f)
+
+![image](https://github.com/user-attachments/assets/3464d9b3-89ff-48df-a1a8-6a54dcf7c760)
+
+![image](https://github.com/user-attachments/assets/dcf6e586-095a-4871-a39a-2284b1690eca)
+
+##### Đánh giá nhóm thuật toán tìm kiếm không có thông tin
+Các thuật toán thuộc nhóm tìm kiếm không thông tin tốn nhiều thời gian thực thi do khám phá toàn bộ không gian trạng thái. BFS và IDS đặc biệt tốn thời gian do lặp lại nhiều trạng thái với trạng thái mục tiêu ở nút nhánh cây tìm kiếm (xa mức của trạng thái ban đầu do ô vua đứng ban đầu và ô cần đến ở hai biên rất xa nhau). DFS hoạt động hiệu quả do ưu tiên tìm sâu một nhánh trước khi chuyển sang nhánh khác.
+Về số bước thực hiện, các thuật toán thuộc nhóm tìm kiếm không thông tin đều có số bước trong lời giải là ít nhất so với các thuật toán khác.
+Về số trạng thái mở rộng, DFS và IDS tiết kiệm bộ nhớ hơn so với BFS và UCS.
+
+##### Đánh giá nhóm thuật toán tìm kiếm có thông tin
+Các thuật toán thuộc nhóm tìm kiếm có thông tin thực thi rất nhanh nhờ sử dụng hàm heuristic để định hướng, tính toán chi phí quá trình tìm kiếm. A* có thời gian thực thi trung bình rất bé vì thuật toán này tìm kiếm dựa trên chí phí ước lượng (hàm heristic) và  chi phí thực tế (g cost). IDA* có thời gian chạy trung bình lớn nhất do phải dùng A* cùng lập từng độ sâu để tìm trạng thái mục tiêu.
+Về số bước thực hiện, nhóm thuật toán thuộc nhóm tìm kiếm có thông tin tìm được lời giải với số bước ở mức trung bình, trừ IDA* ở mức thấp.
+Về số trạng thái mở rộng, các thuật toán nhóm này tương đương nhau ở các cấp độ trò chơi.
+
+##### Đánh giá nhóm thuật toán tìm kiếm cục bộ
+Các thuật toán thuộc nhóm thuật toán tìm kiếm cục bộ có thời gian thực thi trung bình thấp hơn so với các nhóm thuật toán khác nhưng nhóm này đa phần dễ bị mắc kẹt ở cực trị địa phương dẫn đến không tìm ra lời giải ở mức độ 4 của trò chơi. Trong nhóm này steepest ascent hill climbing (thuật toán leo đồi dốc nhất) có thời gian thực thi trung bình bé nhất do thuật toán này ưu tiên chuyển sang trạng thái có chi phí heuristic tốt nhất dẫn đến sớm tìm ra lời giải.
+Về số bước thực hiện, thuật toán thuộc nhóm tìm kiếm cục bộ tìm được lời giải với số bước ở mức trung bình, trừ simple hill climbing ở mức thấp do chuyển trạng thái chỉ xét nút có chi phí tốt hơn hiện tại (không đảm bảo đó là tốt nhất).
+Về số trạng thái mở rộng, Simulated Annealing tiết kiệm bộ nhớ hơn so với các thuật toán cùng nhóm. Beam search là thuật toán chiếm dụng bộ nhớ nhiều nhất trong nhóm do mỗi lần duyệt phải đưa vào và lấy ra với beam width là 2 phần tử.
+
+##### Đánh giá nhóm thuật toán tìm kiếm trong môi trường phức tạp
+Thuật toán tìm kiếm không có sự quan sát (search with no observation) có thời gian thực thi và số trạng thái mở rộng (chiếm dụng bộ nhớ) lớn hơn rất nhiều so với các nhóm thuật toán do sự phức tạp về số trạng thái ban đầu và số trạng thái mục tiêu lớn hơn so với các thuật toán khác.
+Về số bước thực hiện, thuật toán tìm kiếm không có sự quan sát có số bước thực hiện trong lời giải ở mức trung bình nếu có lời giải được tìm ra.
+
 ## Tài liệu tham khảo 
 [1].	Stuart Russell and Peter Norvig, "Russell 2020 Artificial intelligence a modern approach", xuất bản lần 4
 
