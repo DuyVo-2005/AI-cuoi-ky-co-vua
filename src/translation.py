@@ -35,6 +35,7 @@ translations = {
     "Thành viên nhóm": "Group members",
     "Quay lại Menu": "Back to menu",
     "Quay lại": "Back",
+    "Số không gian trạng thái mở rộng": "Number of expanded state space",
     "GVHD: TS. Phan Thị Huyền Trang": "Supervisor: Dr. Phan Thi Huyen Trang",
     "Vũ Anh Quốc - Nhóm trưởng": "Vu Anh Quoc - Group leader",
     "Võ Lê Khánh Duy": "Vo Le Khanh Duy",
