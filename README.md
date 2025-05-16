@@ -248,11 +248,13 @@ Thuật toán IDA*
 
 https://github.com/user-attachments/assets/edf086d1-f945-4c34-b8bf-d4cc8e0da27b
 
-
 Thuật toán simple hill climbing
 
 ![shc_l3 mp4](https://github.com/user-attachments/assets/68b4609b-cf98-4224-90e7-59c672e70d51)
 
+Thuật toán Steepest ascent hill climbing
+
+![sahc_l3 mp4](https://github.com/user-attachments/assets/d3a1d316-33d5-4a19-b984-be1f3ddd89f1)
 
 Thuật toán stochastic hill climbing
 
@@ -275,6 +277,10 @@ Thuật toán UCS
 
 ![ucs_l4 mp4](https://github.com/user-attachments/assets/00010bfe-144c-446f-9266-4f6040d3ca6b)
 
+Thuật toán IDS
+
+![ids_l4 mp4](https://github.com/user-attachments/assets/955b7e48-c737-4a66-aa74-114e473468ad)
+
 Thuật toán Greedy
 
 ![greedy_l4 mp4](https://github.com/user-attachments/assets/fc8186dc-f776-4919-a83a-5b8d11962da8)
@@ -284,6 +290,8 @@ Thuật toán A*
 ![as_l4 mp4](https://github.com/user-attachments/assets/d47b2849-3b60-4d1e-a34e-ed323f7bb6cb)
 
 Thuật toán IDA*
+
+![idas_l4 mp4](https://github.com/user-attachments/assets/9a5d9c16-ab2c-46cc-8418-5118d17f2ec2)
 
 Thuật toán Simple hill climbing
 
@@ -299,6 +307,8 @@ Thuật toán stochastic hill climbing
 Thuật toán Stimulated annealing
 
 Thuật toán Beam Search
+
+![beam_l4 mp4](https://github.com/user-attachments/assets/321173b8-9040-4aef-99a4-662ebe54d852)
 
 Thuật toán search with no observation
 
