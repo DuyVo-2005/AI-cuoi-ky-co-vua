@@ -549,25 +549,26 @@ class ChartFrame(tk.Frame):
         self["bg"] = "#FFCC33"
         self.pack(fill="both", expand=True)
 
-        self.df = None 
-        self.load_data() 
-
         control_panel = tk.Frame(self, bg="#FFCC33", padx=10, pady=10)
         control_panel.pack(side=tk.TOP, fill=tk.X)
 
         tk.Label(control_panel, text=translate(language, "Chọn tiêu chí:"), font=("Times New Roman", 12), bg="#FFCC33").pack(side=tk.LEFT, padx=(0, 5))
-        self.criteria_ccb = ttk.Combobox(control_panel, values=[translate(language, "Thời gian thực thi"), translate(language, "Số bước di chuyển")], width=25, state="readonly")
+        self.criteria_ccb = ttk.Combobox(control_panel, values=[
+            translate(language, "Thời gian thực thi"),
+            translate(language, "Số bước di chuyển"),
+            translate(language, "Số không gian trạng thái mở rộng") 
+        ], width=25, state="readonly")
         self.criteria_ccb.pack(side=tk.LEFT, padx=(0, 15))
         self.criteria_ccb.current(0) 
 
+    
         tk.Label(control_panel, text=translate(language, "Chọn Level:"), font=("Times New Roman", 12), bg="#FFCC33").pack(side=tk.LEFT, padx=(0, 5))
-        available_levels = self.df['Level'].unique().tolist() if self.df is not None and 'Level' in self.df.columns else ["LEVEL 1", "LEVEL 2", "LEVEL 3", "LEVEL 4"]
-        self.level_ccb = ttk.Combobox(control_panel, values=available_levels, width=15, state="readonly")
+        available_levels_initial = ["LEVEL 1", "LEVEL 2", "LEVEL 3", "LEVEL 4"]
+        self.level_ccb = ttk.Combobox(control_panel, values=available_levels_initial, width=15, state="readonly")
         self.level_ccb.pack(side=tk.LEFT, padx=(0, 15))
-        if available_levels: self.level_ccb.current(0) 
+        if available_levels_initial: self.level_ccb.current(0)
 
-        draw_button_state = tk.NORMAL if self.df is not None else tk.DISABLED 
-        self.draw_button = tk.Button(control_panel, text=translate(language, "Vẽ biểu đồ"), font=("Times New Roman", 11), command=self.draw_chart, state=draw_button_state)
+        self.draw_button = tk.Button(control_panel, text=translate(language, "Vẽ biểu đồ"), font=("Times New Roman", 11), command=self.draw_chart, state=tk.DISABLED)
         self.draw_button.pack(side=tk.LEFT, padx=(0, 15))
         back_button = tk.Button(control_panel, text=translate(language, "Quay lại Menu"), font=("Times New Roman", 11), command=lambda: parent.show_frame(MenuFrame))
         back_button.pack(side=tk.LEFT)
@@ -575,72 +576,197 @@ class ChartFrame(tk.Frame):
         self.chart_container_frame = tk.Frame(self, bg="white")
         self.chart_container_frame.pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True, padx=10, pady=10)
 
-        self.canvas = None 
-        self.toolbar = None 
+        self.canvas = None
+        self.toolbar = None
+
+        self.df = None
+        self.load_data()
+
+        if self.df is not None:
+             self.draw_button.config(state=tk.NORMAL)
+        else:
+             self.draw_button.config(state=tk.DISABLED) 
+
+        self._update_level_combobox() 
+        self._update_criteria_combobox(loaded_successfully=(self.df is not None))
+
 
     def load_data(self):
         try:
             data_path = os.path.join(CURRENT_DIRECTORY_PATH, 'data.csv')
             self.df = pd.read_csv(data_path)
             print(f"DEBUG: Đã tải dữ liệu từ {data_path}. Số dòng: {len(self.df)}")
-            if not all(col in self.df.columns for col in ['Level', 'Tên thuật toán', 'Thời gian thực thi', 'Số bước di chuyển']):
-                 print("Cảnh báo: File data.csv thiếu các cột cần thiết ('Level', 'Tên thuật toán', 'Thời gian thực thi', 'Số bước di chuyển').")
-                 self.df = None
+            required_cols = ['Level', 'Tên thuật toán', 'Thời gian thực thi', 'Số bước di chuyển', 'Số không gian trạng thái mở rộng']
+            if not all(col in self.df.columns for col in required_cols):
+                print(f"Cảnh báo: File data.csv thiếu các cột cần thiết. Yêu cầu: {required_cols}, Có sẵn: {self.df.columns.tolist()}")
+                messagebox.showwarning(translate(language, "Thiếu cột"), translate(language, "File data.csv thiếu các cột cần thiết. Vui lòng kiểm tra lại file."))
+                self.df = None
+
+
         except FileNotFoundError:
-            messagebox.showerror(translate(language, "Lỗi File"), translate(language, "Không tìm thấy file 'data.csv'. Hãy đảm bảo file này nằm cùng thư mục với menu.py"))
+            messagebox.showerror(translate(language, "Lỗi File"), translate(language, "Không tìm thấy file 'data.csv'. Hãy đảm bảo file này nằm cùng thư mục với script chính."))
             print("ERROR: File data.csv not found.")
             self.df = None
+
+        except pd.errors.EmptyDataError:
+             messagebox.showwarning(translate(language, "File rỗng"), translate(language, "File data.csv rỗng. Không có dữ liệu để tải."))
+             print("ERROR: data.csv is empty.")
+             self.df = None
+
         except Exception as e:
             messagebox.showerror(translate(language, "Lỗi Đọc File"), f"{translate(language, 'Lỗi khi đọc file data.csv')}: {e}")
             print(f"ERROR: Error reading data.csv: {e}")
             self.df = None
 
+    def _update_criteria_combobox(self, loaded_successfully=False):
+        if loaded_successfully and self.df is not None:
+            chartable_cols_df = self.df.select_dtypes(include=np.number).columns.tolist() 
+            translated_chartable_cols = []
+            if 'Thời gian thực thi' in chartable_cols_df:
+                translated_chartable_cols.append(translate(language, "Thời gian thực thi"))
+            if 'Số bước di chuyển' in chartable_cols_df:
+                translated_chartable_cols.append(translate(language, "Số bước di chuyển"))
+            if 'Số không gian trạng thái mở rộng' in chartable_cols_df:
+                 translated_chartable_cols.append(translate(language, "Số không gian trạng thái mở rộng"))
+
+
+            self.criteria_ccb['values'] = translated_chartable_cols
+            if translated_chartable_cols:
+                self.criteria_ccb.current(0) 
+            else:
+                 self.criteria_ccb.set('')
+
+        else:
+            default_values = [
+                translate(language, "Thời gian thực thi"),
+                translate(language, "Số bước di chuyển"),
+                translate(language, "Số không gian trạng thái mở rộng")
+            ]
+            if self.df is not None:
+                 available_options = []
+                 chartable_cols_df = self.df.select_dtypes(include=np.number).columns.tolist()
+                 if 'Thời gian thực thi' in chartable_cols_df:
+                     available_options.append(translate(language, "Thời gian thực thi"))
+                 if 'Số bước di chuyển' in chartable_cols_df:
+                     available_options.append(translate(language, "Số bước di chuyển"))
+                 if 'Số không gian trạng thái mở rộng' in chartable_cols_df:
+                      available_options.append(translate(language, "Số không gian trạng thái mở rộng"))
+
+                 self.criteria_ccb['values'] = available_options
+                 if available_options:
+                      self.criteria_ccb.current(0)
+                 else:
+                      self.criteria_ccb.set('')
+            else:
+                 self.criteria_ccb['values'] = default_values 
+                 if default_values:
+                      self.criteria_ccb.current(0)
+                 else:
+                      self.criteria_ccb.set('')
+
+
+    def _update_level_combobox(self):
+
+        if self.df is not None and 'Level' in self.df.columns:
+             available_levels = self.df['Level'].unique().tolist()
+             self.level_ccb['values'] = available_levels
+             if available_levels:
+                try:
+                    default_level_index = available_levels.index("LEVEL 1")
+                    self.level_ccb.current(default_level_index)
+                except ValueError:
+                    self.level_ccb.current(0)
+             else:
+                 self.level_ccb.set('')
+        else:
+  
+            default_levels = ["LEVEL 1", "LEVEL 2", "LEVEL 3", "LEVEL 4"]
+            self.level_ccb['values'] = default_levels
+            if default_levels:
+                 try:
+                    default_level_index = default_levels.index("LEVEL 1")
+                    self.level_ccb.current(default_level_index)
+                 except ValueError:
+                    self.level_ccb.current(0)
+            else:
+                 self.level_ccb.set('')
+
+
     def clear_chart(self):
         if self.toolbar:
+            for widget in self.toolbar.winfo_children():
+                 widget.destroy()
             self.toolbar.destroy()
             self.toolbar = None
         if self.canvas:
             self.canvas.get_tk_widget().destroy()
             self.canvas = None
+
     def draw_chart(self):
         if self.df is None:
             messagebox.showwarning(translate(language, "Thiếu dữ liệu"), translate(language, "Không có dữ liệu để vẽ biểu đồ. Vui lòng kiểm tra file data.csv."))
             return
+
         selected_criteria_text = self.criteria_ccb.get()
         selected_level = self.level_ccb.get()
+
         criteria_map = {
             translate(language, "Thời gian thực thi"): 'Thời gian thực thi',
-            translate(language, "Số bước di chuyển"): 'Số bước di chuyển'
+            translate(language, "Số bước di chuyển"): 'Số bước di chuyển',
+            translate(language, "Số không gian trạng thái mở rộng"): 'Số không gian trạng thái mở rộng'
         }
         selected_column = criteria_map.get(selected_criteria_text)
+        if selected_column is None or selected_column not in self.df.columns:
+            messagebox.showerror(translate(language, "Lỗi Lựa chọn"), translate(language, "Tiêu chí lựa chọn không hợp lệ hoặc không tồn tại trong dữ liệu."))
+            print(f"ERROR: Invalid or missing criteria column selected: {selected_criteria_text} -> {selected_column}")
+            return
+        
+        if not pd.api.types.is_numeric_dtype(self.df[selected_column]):
+             messagebox.showerror(translate(language, "Lỗi Dữ liệu"), f"{selected_criteria_text} {translate(language, 'không phải là dạng số và không thể vẽ biểu đồ.')}")
+             print(f"ERROR: Selected column is not numeric: {selected_column}")
+             return
 
-        if selected_column is None:
-             messagebox.showerror(translate(language, "Lỗi Lựa chọn"), translate(language, "Tiêu chí lựa chọn không hợp lệ."))
-             print(f"ERROR: Invalid criteria selected: {selected_criteria_text}")
-             return 
 
         df_level = self.df[self.df['Level'] == selected_level].copy()
-
         if df_level.empty:
             messagebox.showinfo(translate(language, "Không có dữ liệu"), f"{translate(language, 'Không tìm thấy dữ liệu cho')}: {selected_level}")
             print(f"DEBUG: No data found for level: {selected_level}")
-            self.clear_chart() 
+            self.clear_chart()
             return
 
         algorithm_names = df_level['Tên thuật toán']
         metric_values = df_level[selected_column]
 
         self.clear_chart()
-        self.fig = Figure(figsize=(7, 5), dpi=100)
+        self.fig = Figure(figsize=(14, 7), dpi=100)
         self.ax = self.fig.add_subplot(111)
-        bars = self.ax.bar(algorithm_names, metric_values, color='skyblue') 
+        bars = self.ax.bar(algorithm_names, metric_values, color='skyblue')
         for bar in bars:
             yval = bar.get_height()
-            format_string = "%.4f" if selected_column == 'Thời gian thực thi' else "%d"
-            self.ax.text(bar.get_x() + bar.get_width()/2.0, yval, format_string % yval, va='bottom', ha='center', fontsize=8) 
+            if yval is not None:
+                 if selected_column == 'Thời gian thực thi':
+                     format_string = "%.6f"
+                 elif selected_column == 'Số bước di chuyển':
+                     format_string = "%d"
+                 elif selected_column == 'Số không gian trạng thái mở rộng':
+                     format_string = "%d"
+                 text_y_pos = yval
+                 va = 'bottom'
+
+                 if yval > 0 or selected_column == 'Thời gian thực thi' or (selected_column in ['Số không gian trạng thái mở rộng', 'Số bước di chuyển'] and yval == 0):
+                      if yval == 0:
+                           y_bottom, y_top = self.ax.get_ylim()
+                           text_y_pos = y_bottom + (y_top - y_bottom) * 0.01
+                           va = 'bottom'
+                      else:
+                           text_y_pos = yval
+                           va = 'bottom'
+
+                      self.ax.text(bar.get_x() + bar.get_width()/2.0, text_y_pos, format_string % yval, va=va, ha='center', fontsize=8)
+
 
         self.ax.set_xlabel(translate(language, "Tên thuật toán"))
-        self.ax.set_ylabel(selected_criteria_text) 
+        self.ax.set_ylabel(selected_criteria_text)
         self.ax.set_title(f"{translate(language, 'So sánh')} {selected_criteria_text} - {selected_level}")
 
         plt.setp(self.ax.get_xticklabels(), rotation=45, ha="right")
@@ -648,12 +774,13 @@ class ChartFrame(tk.Frame):
         self.fig.tight_layout()
         self.canvas = FigureCanvasTkAgg(self.fig, master=self.chart_container_frame)
         self.canvas_widget = self.canvas.get_tk_widget()
-        self.canvas_widget.pack(side=tk.TOP, fill=tk.BOTH, expand=1)
         self.toolbar = NavigationToolbar2Tk(self.canvas, self.chart_container_frame)
+        self.toolbar.pack(side=tk.TOP, fill=tk.X, expand=False)
         self.toolbar.update()
-        self.canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
+
+        self.canvas_widget.pack(side=tk.TOP, fill=tk.BOTH, expand=1)
         self.canvas.draw()
-     
+        
 
 
 class MusicFrame(tk.Frame):
@@ -750,7 +877,7 @@ def show_king_tour_screen(algorthm_name: str, level: int):
                     for attack_pos in enemy_capture_moves(enemy_pos):
                         draw_image(attack_pos, attack_cell_img)
                 pygame.display.flip()
-                time.sleep(0.75)#Delay các bước 0.75 giây
+                time.sleep(0.75)
         else:
             display_path= path[0] + path[1]
             for pos in range(len(path[0])):
@@ -768,7 +895,7 @@ def show_king_tour_screen(algorthm_name: str, level: int):
                     for attack_pos in enemy_capture_moves(enemy_pos):
                         draw_image(attack_pos, attack_cell_img)
                 pygame.display.flip()
-                time.sleep(0.75)#Delay các bước 0.75 giây          
+                time.sleep(0.75)         
 
         running = True
         while running:
@@ -780,7 +907,7 @@ def show_king_tour_screen(algorthm_name: str, level: int):
     global start_state_tuple
     enimies_positions = []
     if level >= 1:
-        enimies_positions.append((4,4)) #[(4,4),(3,3),(3,5),(5,3),(5,5)]
+        enimies_positions.append((4,4)) 
         enimies_positions.append((6,6))
     if level >= 2:
         enimies_positions.append((1,6))
