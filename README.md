@@ -1,4 +1,4 @@
-# Đồ án cuối kỳ nhập môn trí tuệ nhân tạo - Đề tài ứng dụng AI vào cờ vua
+# Đồ án cuối kỳ nhập môn trí tuệ nhân tạo - Đề tài ứng dụng AI vào cờ vua - Nhóm 21
 
 ## Nội dung
 ### 1. Thuật toán MiniMax và Cắt tỉa Alpha-Beta trong cờ Vua
