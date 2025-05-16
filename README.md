@@ -394,12 +394,12 @@ Thuật toán search with no observation
 ![image](https://github.com/user-attachments/assets/dcf6e586-095a-4871-a39a-2284b1690eca)
 
 ##### Đánh giá nhóm thuật toán tìm kiếm không có thông tin
-Các thuật toán thuộc nhóm tìm kiếm không thông tin tốn nhiều thời gian thực thi do khám phá toàn bộ không gian trạng thái. BFS và IDS đặc biệt tốn thời gian do lặp lại nhiều trạng thái với trạng thái mục tiêu ở nút nhánh cây tìm kiếm (xa mức của trạng thái ban đầu do ô vua đứng ban đầu và ô cần đến ở hai biên rất xa nhau). DFS hoạt động hiệu quả do ưu tiên tìm sâu một nhánh trước khi chuyển sang nhánh khác.
+Các thuật toán thuộc nhóm tìm kiếm không thông tin tốn nhiều thời gian thực thi do khám phá toàn bộ không gian trạng thái. BFS và IDS đặc biệt tốn thời gian do lặp lại nhiều trạng thái với trạng thái mục tiêu ở nút lá cây tìm kiếm (xa mức của trạng thái ban đầu do ô vua đứng ban đầu và ô cần đến ở hai biên rất xa nhau). DFS hoạt động hiệu quả do ưu tiên tìm sâu một nhánh trước khi chuyển sang nhánh khác.
 Về số bước thực hiện, các thuật toán thuộc nhóm tìm kiếm không thông tin đều có số bước trong lời giải là ít nhất so với các thuật toán khác.
 Về số trạng thái mở rộng, DFS và IDS tiết kiệm bộ nhớ hơn so với BFS và UCS.
 
 ##### Đánh giá nhóm thuật toán tìm kiếm có thông tin
-Các thuật toán thuộc nhóm tìm kiếm có thông tin thực thi rất nhanh nhờ sử dụng hàm heuristic để định hướng, tính toán chi phí quá trình tìm kiếm. A* có thời gian thực thi trung bình rất bé vì thuật toán này tìm kiếm dựa trên chí phí ước lượng (hàm heristic) và  chi phí thực tế (g cost). IDA* có thời gian chạy trung bình lớn nhất do phải dùng A* cùng lập từng độ sâu để tìm trạng thái mục tiêu.
+Các thuật toán thuộc nhóm tìm kiếm có thông tin thực thi rất nhanh nhờ sử dụng hàm heuristic để định hướng, tính toán chi phí quá trình tìm kiếm. A* có thời gian thực thi trung bình rất bé vì thuật toán này tìm kiếm dựa trên chí phí ước lượng (hàm heristic) và chi phí thực tế (g cost). IDA* có thời gian chạy trung bình lớn nhất do phải dùng A* cùng lập từng độ sâu để tìm trạng thái mục tiêu.
 Về số bước thực hiện, nhóm thuật toán thuộc nhóm tìm kiếm có thông tin tìm được lời giải với số bước ở mức trung bình, trừ IDA* ở mức thấp.
 Về số trạng thái mở rộng, các thuật toán nhóm này tương đương nhau ở các cấp độ trò chơi.
 
