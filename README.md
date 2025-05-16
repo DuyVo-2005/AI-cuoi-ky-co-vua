@@ -183,6 +183,10 @@ Thuật toán UCS
 
 ![ucs_l2 mp4](https://github.com/user-attachments/assets/9a89a62d-8352-4657-803d-75fba311382a)
 
+Thuật toán IDS
+
+![ids_l2 mp4](https://github.com/user-attachments/assets/0eefd7ce-676a-46c1-861b-4ebf9ba04636)
+
 Thuật toán Greedy
 
 ![greedy_l2 mp4](https://github.com/user-attachments/assets/a9d2d6e7-bc89-4fc2-bb5b-8badf1d03149)
@@ -192,6 +196,8 @@ Thuật toán A*
 ![as_l2 mp4](https://github.com/user-attachments/assets/b060dd58-f372-4309-8c08-f484c3f4420a)
 
 Thuật toán IDA*
+
+![idas_l2 mp4](https://github.com/user-attachments/assets/074e818e-4236-41fe-8291-c992f528d08b)
 
 Thuật toán Simple hill climbing
 
@@ -203,9 +209,11 @@ Thuật toán Steepest ascent hill climbing
 
 Thuật toán stochastic hill climbing
 
+![stohastic_hc_l2 mp4](https://github.com/user-attachments/assets/5d5c0ce7-6c0b-42a8-8be5-860271107c56)
+
 Thuật toán Stimulated annealing
 
-
+![stimulate_annealing_l2 mp4](https://github.com/user-attachments/assets/e8b91bce-68ea-474f-a6e6-108fb98030d9)
 
 Thuật toán Beam Search
 
@@ -222,10 +230,7 @@ Thuật toán BFS
 
 Thuật toán DFS
 
-https://github.com/user-attachments/assets/946fc8bc-6c04-4a35-9673-554c64aacae2
-
 ![dfs_l3 mp4](https://github.com/user-attachments/assets/0d2dc5dd-e98c-45b5-80ae-a98022538003)
-
 
 Thuật toán UCS
 
