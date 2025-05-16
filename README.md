@@ -167,7 +167,8 @@ Thuật toán Beam Search
 ![beam_l1 mp4](https://github.com/user-attachments/assets/7ac78174-4d99-47cf-9254-ed4ccc4f8e80)
 
 Thuật toán search with no observation
-![no_ob_l1 mp4](https://github.com/user-attachments/assets/1c3712b2-cccf-4890-9bc1-5da13edc5a74)
+
+![search_no_ob_l1 mp4](https://github.com/user-attachments/assets/0ae23201-c944-4107-a8c1-7275cd2a972b)
 
 ##### Level 2
 Thuật toán BFS
@@ -179,6 +180,8 @@ Thuật toán DFS
 ![dfs_l2 mp4](https://github.com/user-attachments/assets/677b95f4-eda8-4c92-91e4-ffbfb4db5cb7)
 
 Thuật toán UCS
+
+![ucs_l2 mp4](https://github.com/user-attachments/assets/9a89a62d-8352-4657-803d-75fba311382a)
 
 Thuật toán Greedy
 
@@ -192,7 +195,11 @@ Thuật toán IDA*
 
 Thuật toán Simple hill climbing
 
+![simple_hc_l2 mp4](https://github.com/user-attachments/assets/a28f2984-0d8e-4a34-b9c4-7c9f455b567e)
+
 Thuật toán Steepest ascent hill climbing
+
+![steepest_ahc_l2 mp4](https://github.com/user-attachments/assets/8545a591-9b0b-47a1-a322-83bdc8b48e7f)
 
 Thuật toán stochastic hill climbing
 
@@ -205,6 +212,8 @@ Thuật toán Beam Search
 ![beam_l2 mp4](https://github.com/user-attachments/assets/090ec5b2-c909-41e3-9766-5e2e018c5fc7)
 
 Thuật toán search with no observation
+
+![search_no_ob_l2 mp4](https://github.com/user-attachments/assets/ee3ad115-088e-4705-9726-d701791a60ec)
 
 ##### Level 3
 Thuật toán BFS
@@ -242,7 +251,7 @@ Thuật toán simple hill climbing
 
 Thuật toán stochastic hill climbing
 
-https://github.com/user-attachments/assets/ec834242-8227-40ca-a229-5a8ae0d0e965
+![stochastic_hc_l3 mp4](https://github.com/user-attachments/assets/c922edff-dd09-4c64-b142-2d122ff72524)
 
 Thuật toán Beam Search
 
@@ -272,6 +281,8 @@ Thuật toán A*
 Thuật toán IDA*
 
 Thuật toán Simple hill climbing
+
+![simple_hc_l4 mp4](https://github.com/user-attachments/assets/d1d9da55-4529-4dd4-989b-74a597faaebd)
 
 Thuật toán Steepest ascent hill climbing
 
