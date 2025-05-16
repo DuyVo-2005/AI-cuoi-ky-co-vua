@@ -34,6 +34,7 @@ translations = {
     "Thông tin chung": "General Information",
     "Thành viên nhóm": "Group members",
     "Quay lại Menu": "Back to menu",
+    "Quay lại": "Back",
     "GVHD: TS. Phan Thị Huyền Trang": "Supervisor: Dr. Phan Thi Huyen Trang",
     "Vũ Anh Quốc - Nhóm trưởng": "Vu Anh Quoc - Group leader",
     "Võ Lê Khánh Duy": "Vo Le Khanh Duy",
