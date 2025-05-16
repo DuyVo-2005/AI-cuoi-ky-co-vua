@@ -115,8 +115,10 @@ Mục tiêu: đi qua tất cả N×N ô trên bàn cờ.
 https://github.com/user-attachments/assets/6b31fb3e-83c6-4ace-9667-c0945cad1297
 
 ### 5. Mini Game Vua Tẩu thoát
-
-
+#### Mô tả bài toán
+Không gian mô phỏng là một bàn cờ vua có kích thước 9x18, bàn cờ gồm có hai loại cờ là quân vua và quân tốt. Quân vua là quân duy nhất được di chuyển, mỗi lần di chuyển quân vua sẽ đi một ô theo một trong các hướng lên, xuống, trái, phải, chéo trên trái, chéo trên phải, chéo dưới trái hoặc chéo dưới phải. Quân tốt đóng vai trò là vật cản trong mô phỏng. Một quân tốt sẽ được đặt cố định tại một ô và quân này sẽ trấn giữ năm ô bao gồm ô nó đang đứng, ô chéo trên trái, ô chéo trên phải, ô chéo dưới trái, ô chéo dưới phải.
+#### Mục tiêu của trò chơi
+Áp dụng một trong các thuật toán tìm kiếm AI để tìm ra đường đi cho quân vua từ một ô đến một ô khác trên bàn cờ sao cho đường đi phải chứa các ô nằm trong bàn cờ và không được chứa các ô mà quân tốt đang trấn giữ.
 #### Video chạy thử nghiệm
 ##### Level 1
 Thuật toán BFS
